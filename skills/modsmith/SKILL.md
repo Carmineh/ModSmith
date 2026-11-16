@@ -1,6 +1,6 @@
 ---
 name: modsmith
-description: Develop and maintain Minecraft Java mods (NeoForge, Fabric, Forge) following good engineering practices. Commands - init (detect or scaffold a mod project and save a profile), study (map an existing mod's architecture), audit (prioritized CRITICAL/HIGH/MEDIUM/LOW report), fix (fix audit findings, bugs or crash logs), new (add blocks, items, entities, packets, configs...), port (move a mod to another Minecraft version or loader), verify (build + headless server check), review (check uncommitted changes). Use this skill whenever the user works on a Minecraft mod - creating, reading, debugging, fixing a crash, refactoring, auditing, updating or porting it - or mentions NeoForge, Fabric, Forge, mixins, mods.toml, fabric.mod.json, registries, datagen or a Minecraft crash report, even if they don't type /modsmith.
+description: Develop and maintain Minecraft Java mods (NeoForge, Fabric, Forge) following good engineering practices, with a guided path from idea to playable mod. Commands - init (detect or scaffold a mod project and save a profile), plan (turn a mod idea into a design and a roadmap of milestones), study (map an existing mod's architecture), audit (prioritized CRITICAL/HIGH/MEDIUM/LOW report), fix (fix audit findings, bugs or crash logs), new (add blocks, items, entities, packets, configs...), port (move a mod to another Minecraft version or loader), verify (build + headless server check), review (check uncommitted changes). Use this skill whenever the user works on a Minecraft mod - creating, reading, debugging, fixing a crash, refactoring, auditing, updating or porting it - or mentions NeoForge, Fabric, Forge, mixins, mods.toml, fabric.mod.json, registries, datagen or a Minecraft crash report, even if they don't type /modsmith.
 ---
 
 # Modsmith — Minecraft mod development & maintenance
@@ -22,6 +22,7 @@ The user invokes the skill as `/modsmith <command> [args]`. If they talk natural
 | Command | Purpose | Details |
 |---|---|---|
 | `init` | Detect (or scaffold) the project, ask what's missing, write the profile | `references/commands/init.md` |
+| `plan [idea]` | Turn an idea into `DESIGN.md`: mechanics, content, dependency check, open questions, roadmap of milestones → commands | `references/commands/plan.md` |
 | `study [area]` | Map the mod's architecture | `references/commands/study.md` |
 | `audit [--scope=path] [--min=LEVEL]` | Prioritized findings report | `references/commands/audit.md` |
 | `fix <ID \| description \| crash log>` | Root-cause fix with minimal change | `references/commands/fix.md` |
@@ -30,7 +31,11 @@ The user invokes the skill as `/modsmith <command> [args]`. If they talk natural
 | `verify` | Build + headless server + gametests | `references/commands/verify.md` |
 | `review` | Audit only the uncommitted changes | `references/commands/review.md` |
 
-Read the command's reference file before executing it — each one contains the full procedure and output format. With no command (`/modsmith` alone), briefly list the commands and suggest the next sensible one based on the project state (no profile → `init`; profile but no study → `study`; etc.).
+Read the command's reference file before executing it — each one contains the full procedure and output format. With no command (`/modsmith` alone), briefly list the commands and suggest the next sensible one based on the project state (no profile → `init`; `DESIGN.md` with open milestones → show progress and the next milestone's command; existing mod without study → `study`; etc.).
+
+### Guided path
+
+Modsmith should always leave the user knowing **what to do next**. New mods follow: idea → `init` (platform chosen from the idea, dependencies checked) → `DESIGN.md` roadmap → one `new` per milestone, each playable in game → `verify`. Existing mods follow: `init` → `study` → `audit` → `fix` batches, and `plan` when the user wants to add features. End every command with the concrete next step.
 
 ## The profile
 
@@ -41,7 +46,7 @@ Every command except `init` starts by reading `.modsmith/profile.md` in the mod'
 
 ### Where outputs go
 
-Commands write their documents (`profile.md`, `STUDY.md`, `AUDIT.md`, `PORT-<target>.md`) to the **modsmith directory**:
+Commands write their documents (`profile.md`, `DESIGN.md`, `STUDY.md`, `AUDIT.md`, `PORT-<target>.md`) to the **modsmith directory**:
 - default: `.modsmith/` in the mod's root;
 - `--out=<dir>` on any command: write there instead and don't create anything in the mod (use this for read-only studies, or when auditing someone else's mod);
 - the profile can set a permanent location (`modsmith_dir`).
@@ -87,6 +92,7 @@ These exist because mods live in people's worlds — a careless change can corru
 3. **Save compatibility.** Changing registry names, NBT/codec keys, data component or attachment ids breaks existing worlds. When a change touches persisted data, flag it explicitly and provide a migration path (fallback reading of old keys, aliases, data fixers) or get the user's explicit OK.
 4. **Verify after changing.** Run the `verify` procedure (at least `build`; `runServer` when sides, registration or networking were touched). Report the actual result — if something couldn't be run, say so.
 5. **Don't invent versions.** For build files, dependency versions and Gradle plugins, read them from the project or official sources; never write version numbers from memory.
+6. **Stay inside the project.** Don't change user-global settings (`~/.gradle/gradle.properties`, `JAVA_HOME`, PATH, IDE settings) — they affect every other project on the machine. Solve environment problems with project-level configuration, and clean up temporary files you created.
 
 ## Severity scale (shared by audit, review, fix, port)
 
@@ -109,4 +115,5 @@ Load only what the current task needs.
 - `references/api-lookup.md` — how to verify an API against the real Minecraft/loader classes in the project's Gradle cache.
 - `references/glossary.md` — plain-language definitions for beginners.
 - `assets/profile-template.md` — template for `.modsmith/profile.md`.
+- `assets/design-template.md` — template for `DESIGN.md` (idea, mechanics, content, dependencies, open questions, roadmap).
 - `scripts/scan.mjs` — fast heuristic scanner (`node scripts/scan.mjs <mod-root>`; Node 18+ ships with Claude Code, nothing to install). It produces leads, not verdicts: confirm every hit by reading the code before reporting it.

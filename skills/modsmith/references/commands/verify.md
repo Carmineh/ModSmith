@@ -2,7 +2,7 @@
 
 Goal: objective evidence that the mod builds and loads, especially on a dedicated server (the place where side bugs hide, because singleplayer runs client and server in one JVM).
 
-Use `./gradlew` on Unix shells and `gradlew.bat` (or `./gradlew` from Git Bash) on Windows. Gradle runs can take minutes: run them in the background where possible and report progress.
+Use `./gradlew` on Unix shells and `gradlew.bat` (or `./gradlew` from Git Bash) on Windows. Gradle runs can take minutes — the first one on a machine downloads Minecraft and can take 5–10: tell the user before starting, run in the background where possible and report progress, so it doesn't look stuck. If Gradle needs a different JDK to run, fix it at project level (see `init.md`, "Build environment problems"), never in user-global settings.
 
 ## Steps
 

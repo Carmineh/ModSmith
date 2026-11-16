@@ -4,6 +4,7 @@ Syntax: `new <kind> <name> [details]`. Kinds: `block`, `item`, `blockentity`, `e
 
 ## Procedure
 
+0. If `DESIGN.md` exists, read it: find the milestone this request belongs to, follow its mechanics and the "design for reuse" grouping (variants = one parameterised class), and respect answered design questions. If the request needs an open question answered, ask it now (beginners: propose a default). If the request isn't in the plan, do it anyway and add it to the roadmap.
 1. Read the profile and look at **how the mod already does the same kind of thing**. Consistency with the existing codebase beats your preferred style — unless the existing pattern is itself a finding (then follow the correct idiom and mention why).
 2. Ask only what's needed and not obvious (e.g. for a block: does it need a block entity? a GUI? custom drops?). For beginners, propose a sensible default and go.
 3. Look up the loader idiom in `references/loaders/<loader>.md`, and the relevant `practices/` file (packets → networking.md, stored data → persistence.md, mixins → mixins.md).
@@ -23,4 +24,4 @@ Syntax: `new <kind> <name> [details]`. Kinds: `block`, `item`, `blockentity`, `e
 - **config**: correct config type (client/common/server — server config is per-world and synced), ranges/validation, don't read values before the config is loaded, comments for every option.
 - **mixin**: only when no event/API exists — say which alternatives you checked. Prefer `@Inject`/`@ModifyExpressionValue`(MixinExtras) over `@Redirect`/`@Overwrite`; `require = 1` for essential injections; client mixins in the `client` array.
 
-Report what was created (files), what the user must still provide (textures!), and how to test in game.
+Report what was created (files), what the user must still provide (textures!), and how to test in game — concrete steps ("open a creative world, search 'tier1', place it, put iron ore in the left slot…"). If the milestone is complete, tick it in `DESIGN.md` (changelog row) and propose the next milestone's command, so the user always knows the next step.
