@@ -44,6 +44,7 @@ public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
 public static final DeferredRegister<CreativeModeTab> TABS =
     DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 ```
+- Creative tabs: the mod's own tab is a `CreativeModeTab.builder().title(Component.translatable("itemGroup.<modid>.<name>")).icon(...).displayItems((params, output) -> ...).build()` registered through the `TABS` register; entries for vanilla tabs are added in `BuildCreativeModeTabContentsEvent` (mod bus) with `event.insertAfter(...)`/`event.accept(...)`.
 - Use `ResourceLocation.fromNamespaceAndPath(MODID, "path")` / `ResourceLocation.parse("ns:path")` (constructor is private since 1.21).
 - Access registered objects via the `DeferredHolder` (`.get()`) only after registration — never in static initializers of other registries' values.
 

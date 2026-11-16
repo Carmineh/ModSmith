@@ -20,7 +20,7 @@ Static registry holders only register when their class is loaded — call an `in
 Registry.register(Registries.ITEM,                   Registry.register(BuiltInRegistries.ITEM,
     Identifier.of(MODID, "thing"), new Item(...));       ResourceLocation.fromNamespaceAndPath(MODID, "thing"), new Item(...));
 ```
-Creative tabs: `ItemGroupEvents.modifyEntriesEvent(key)` or register a custom tab with `FabricItemGroup.builder()`. Entity attributes: `FabricDefaultAttributeRegistry.register(TYPE, attributes)`.
+Creative tabs: add to vanilla tabs with `ItemGroupEvents.modifyEntriesEvent(key)` (`addAfter(vanillaItem, ...)` to place entries next to related ones); the mod's own tab is `FabricItemGroup.builder().title(Component.translatable("itemGroup.<modid>.<name>")).icon(...).displayItems(...).build()` registered in `BuiltInRegistries.CREATIVE_MODE_TAB` (Mojmap names). Entity attributes: `FabricDefaultAttributeRegistry.register(TYPE, attributes)`.
 
 ## Events (Fabric API callbacks)
 `ServerTickEvents.END_SERVER_TICK`, `ServerTickEvents.END_WORLD_TICK`, `UseEntityCallback.EVENT`, `UseBlockCallback.EVENT`, `AttackEntityCallback.EVENT`, `ServerLivingEntityEvents.AFTER_DEATH`, `CommandRegistrationCallback.EVENT`, `ServerLifecycleEvents.*`, `LootTableEvents.MODIFY`, `BiomeModifications.addSpawn(...)`. There is no per-entity tick event — use a mixin into the entity's tick (minimal `@Inject`) or the world tick with a tracked set of entities.

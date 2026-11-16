@@ -19,6 +19,7 @@ See `practices/sides.md`.
 
 ## 3. Registration
 - [ ] Registration is unconditional: no `if (ModList.isLoaded(...)) register(...)`. What a mod registers must not depend on which other mods are installed (registry mismatch between client and server, items vanishing from worlds when a pack changes). Hide or disable content instead.
+- [ ] A mod that adds blocks/items has its **own creative tab** containing all of them (translated title, own icon), and they also appear in the fitting vanilla tabs. Obtainable items missing from every tab are MEDIUM (players can't find them); a missing mod tab is LOW–MEDIUM. Debug/test items in public tabs → question for the author.
 - [ ] Every registered item has a model and every model references existing textures/fluids (no purple-black items, no orphan files). Prefer datagen for models so they follow registration.
 - [ ] Everything registered through the loader's registry mechanism at the right time (DeferredRegister / `Registry.register` in initializer) — no `new Block(...)` outside registration, no registry access before registries are populated.
 - [ ] Registry names lowercase, stable, namespaced with mod id.
