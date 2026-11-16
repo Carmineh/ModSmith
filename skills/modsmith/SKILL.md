@@ -46,7 +46,7 @@ Commands write their documents (`profile.md`, `STUDY.md`, `AUDIT.md`, `PORT-<tar
 - `--out=<dir>` on any command: write there instead and don't create anything in the mod (use this for read-only studies, or when auditing someone else's mod);
 - the profile can set a permanent location (`modsmith_dir`).
 
-The first time a command would create `.modsmith/` inside a git repository, say so and ask whether to commit it (useful documentation and a maintenance log — recommended for your own mods) or add it to `.gitignore`. `study`, `audit` and `review` never modify mod files — only the modsmith directory.
+The first time a command would create `.modsmith/` inside a git repository, say so and ask whether to commit it (useful documentation and a maintenance log — recommended for your own mods) or ignore it — via `.gitignore`, or via `.git/info/exclude` when the repository belongs to someone else (keeps their tracked files untouched). `study`, `audit` and `review` never modify mod files — only the modsmith directory.
 
 ### Language
 

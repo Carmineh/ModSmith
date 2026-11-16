@@ -81,6 +81,12 @@ function isClientPath(rel) {
   return ["jei", "rei", "emi"].some((seg) => p.includes(`/${seg}/`));
 }
 
+// Multi-module projects (multiloader: common/, fabric/, neoforge/…) keep sources under <module>/src/.
+const isSrc = (rel) => /(^|\/)src\//.test(rel);
+const isGenerated = (rel) => /(^|\/)src\/generated\//.test(rel);
+const isMainResources = (rel) => /(^|\/)src\/main\/(resources|templates)\//.test(rel);
+const moduleOf = (rel) => (rel.startsWith("src/") ? "" : rel.split("/src/")[0]);
+
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const lineOf = (text, index) => text.slice(0, index).split("\n").length;
 
@@ -120,7 +126,7 @@ function buildInventory(root, rels) {
     root,
     loader: loader.length ? loader : ["unknown"],
     minecraft_version: mc,
-    loader_version: props.neo_version || props.loader_version || props.forge_version || null,
+    loader_version: props.neo_version || props.neoforge_version || props.loader_version || props.fabric_loader_version || props.forge_version || null,
     mod_id: props.mod_id || props.modid || props.archives_base_name || null,
     mappings,
     kotlin: codeFiles.some((r) => r.endsWith(".kt")),
@@ -128,7 +134,8 @@ function buildInventory(root, rels) {
     packages: sortedPackages,
     mixin_configs: rels.filter((r) => /mixins?\.json$/.test(r) && r.includes("/resources/")),
     access_transformer: rels.filter((r) => r.endsWith("accesstransformer.cfg") || r.endsWith(".accesswidener")),
-    has_datagen_output: rels.some((r) => r.startsWith("src/generated/")),
+    has_datagen_output: rels.some(isGenerated),
+    modules: [...new Set(rels.filter((r) => /\/src\/main\//.test("/" + r)).map(moduleOf))].map((m) => m || "(root)"),
     has_gametests: rels.some((r) => r.toLowerCase().includes("gametest")),
     ci: rels.filter((r) => r.startsWith(".github/workflows/")),
   };
@@ -160,7 +167,8 @@ const LINE_CHECKS = [
     /\.(getOrCreateTag|getTag)\s*\(\s*\)|\.setTag\s*\(/, true, "1.20.5"],
   ["static-collection-of-game-objects", "HIGH?",
     "Static collection keyed/valued by game objects or UUIDs: possible memory leak, unsaved state, or state shared between logical sides.",
-    /\bstatic\b[^=;(]*\b(Map|HashMap|WeakHashMap|ConcurrentHashMap|List|ArrayList|Set|HashSet)\s*<[^;=]*\b(Entity|Player|ServerPlayer|LivingEntity|Level|ServerLevel|BlockEntity|ItemStack|UUID|Cow|Mob|Animal)\b/,
+    // fields only: "static ... Map<...Player...> NAME =" or ";" (not static methods returning collections)
+    /\bstatic\b[^=;(]*\b(Map|HashMap|WeakHashMap|ConcurrentHashMap|List|ArrayList|Set|HashSet)\s*<[^;=(]*\b(Entity|Player|ServerPlayer|LivingEntity|Level|ServerLevel|BlockEntity|ItemStack|UUID|Cow|Mob|Animal)\b[^;=(]*>\s*\w+\s*[=;]/,
     true, null],
   ["new-random", "LOW", "new Random(): prefer the level/entity RandomSource.", /\bnew\s+(java\.util\.)?Random\s*\(/, true, null],
   ["reflection", "MEDIUM?", "Reflection: fragile across versions/obfuscation; prefer access transformers/wideners or accessors.",
@@ -188,6 +196,8 @@ const LEGACY_DATA_DIRS_121 = {
 };
 const LEGACY_TAG_DIRS_121 = { blocks: "block", items: "item", entity_types: "entity_type", fluids: "fluid", game_events: "game_event" };
 
+const CLIENT_CLASS_DECL =
+  /\bclass\s+\w+[^{]*\b(extends|implements)\s+[^{]*\b(\w*Screen|\w*Renderer|BlockEntityRenderer|EntityRenderer|BlockEntityWithoutLevelRenderer|EntityModel|HierarchicalModel|Model|BakedModel|RenderLayer|Particle|ParticleProvider|AbstractContainerScreen|ClientTooltipComponent)\b/;
 const TICK_METHODS = new Set(["tick", "aiStep", "baseTick", "serverTick", "customServerAiStep", "inactiveTick"]);
 const CHANGE_CALLBACKS = new Set(["onContentsChanged", "onEnergyChanged", "onChanged"]);
 const CLIENT_METHODS = new Set(["initializeClient", "registerClient", "onInitializeClient", "clientSetup"]);
@@ -282,7 +292,7 @@ function checkDataKeys(root, rels, modId, codecFields, add) {
   const rx = new RegExp(`resources/data/${escapeRe(modId)}/([^/]+)/.+\\.json$`);
   for (const r of rels) {
     const m = r.match(rx);
-    if (!m || KNOWN_DATA_DIRS.has(m[1]) || r.startsWith("src/generated/")) continue;
+    if (!m || KNOWN_DATA_DIRS.has(m[1]) || isGenerated(r)) continue;
     let data;
     try {
       data = JSON.parse(readText(path.join(root, r)));
@@ -301,7 +311,7 @@ function checkDataKeys(root, rels, modId, codecFields, add) {
   }
 }
 
-function checkItemModels(root, rels, modId, registered, add) {
+function checkItemModels(root, rels, modId, registered, add, allCode = "") {
   const marker = `/assets/${modId}/`;
   const first = rels.find((r) => r.includes(marker));
   if (!first) return;
@@ -337,7 +347,8 @@ function checkItemModels(root, rels, modId, registered, add) {
     }
   }
   for (const tex of [...textures].sort()) {
-    if (tex.startsWith("item/") && !referenced.has(tex)) {
+    // textures referenced from code (GUI slot icons, sprites) are not missing a model
+    if (tex.startsWith("item/") && !referenced.has(tex) && !allCode.includes(tex)) {
       add("texture-without-model", "MEDIUM?",
         "Item texture not referenced by any model: if the item is registered it probably renders as missing-texture.",
         `${base}textures/${tex}.png`);
@@ -358,17 +369,22 @@ function scan(root) {
   };
 
   const codecFields = new Set();
+  const codeText = [];
   const registeredNames = new Set();
   const configSpecs = [];
 
   for (const rel of rels) {
-    if (!CODE_EXT.has(path.extname(rel)) || !rel.startsWith("src/") || rel.startsWith("src/generated/")) continue;
+    if (!CODE_EXT.has(path.extname(rel)) || !isSrc(rel) || isGenerated(rel)) continue;
     const text = readText(path.join(root, rel));
     const lines = text.split(/\r?\n/);
     const clientFile = isClientPath(rel);
     const mixinFile = rel.toLowerCase().includes("/mixin/");
     const info = analyzeStructure(lines);
 
+    // A class that is itself a client class (renderer, screen, model…) only loads on the client:
+    // its client imports are expected. Common in multiloader `common/` modules.
+    const clientClass = CLIENT_CLASS_DECL.test(text);
+    codeText.push(text);
     for (const m of text.matchAll(/(?:optionalFieldOf|fieldOf)\(\s*"([^"]+)"/g)) codecFields.add(m[1]);
     for (const m of text.matchAll(/\bregister\w*\(\s*"([a-z0-9_./-]+)"/g)) registeredNames.add(m[1]);
     for (const m of text.matchAll(/registerConfig\(\s*[\w.]+\s*,\s*([\w.]+)/g)) {
@@ -379,7 +395,7 @@ function scan(root) {
       const n = idx + 1;
       const stripped = line.trim();
       if (stripped.startsWith("//") || stripped.startsWith("*") || stripped.startsWith("/*")) return;
-      const inClient = clientFile || info.client[idx];
+      const inClient = clientFile || clientClass || info.client[idx];
       for (const [cid, sev, desc, rx, appliesClient, minMc] of LINE_CHECKS) {
         if (!appliesClient && inClient) continue;
         // client mixins legitimately import client classes; the mixin config check covers them
@@ -481,7 +497,7 @@ function scan(root) {
   const modId = inv.mod_id;
   if (modId) {
     checkDataKeys(root, rels, modId, codecFields, add);
-    checkItemModels(root, rels, modId, registeredNames, add);
+    checkItemModels(root, rels, modId, registeredNames, add, codeText.join("\n"));
     const langRx = new RegExp(`assets/${escapeRe(modId)}/lang/en_us\\.json$`);
     if (!rels.some((r) => langRx.test(r))) {
       add("missing-lang", "MEDIUM", `No assets/${modId}/lang/en_us.json found (datagen output counts).`, "src/main/resources");
@@ -489,7 +505,7 @@ function scan(root) {
   }
 
   for (const r of rels) {
-    if ((r.startsWith("src/main/resources") || r.startsWith("src/main/templates")) && (r.endsWith(".toml") || r.endsWith(".json"))) {
+    if (isMainResources(r) && (r.endsWith(".toml") || r.endsWith(".json"))) {
       if (/examplemod|Example Mod|examplemod\.png/.test(readText(path.join(root, r)))) {
         add("template-leftovers", "LOW", "MDK/template placeholder content left in metadata/resources.", r);
       }
@@ -535,7 +551,7 @@ function toMarkdown(result, inventoryOnly, all = false) {
   const LIMIT = all ? Infinity : 25;
   const inv = result.inventory;
   const out = ["# Modsmith scan", "", "## Inventory", ""];
-  for (const k of ["loader", "minecraft_version", "loader_version", "mod_id", "mappings", "kotlin", "code_files",
+  for (const k of ["loader", "modules", "minecraft_version", "loader_version", "mod_id", "mappings", "kotlin", "code_files",
     "mixin_configs", "access_transformer", "has_datagen_output", "has_gametests", "ci"]) {
     out.push(`- **${k}:** ${fmt(inv[k])}`);
   }

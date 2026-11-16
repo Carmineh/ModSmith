@@ -33,7 +33,9 @@ Then ask the user (one compact message, with your detected values as defaults so
 - Anything you couldn't detect or that looks inconsistent.
 - Optional: goals for the mod (to orient future audits), target environments (client-only? server-required? both).
 
-Reply language: infer from the user's messages; don't ask. If nobody can answer (non-interactive run), apply the defaults from SKILL.md and mark them `(assumed)`.
+Reply language: infer from the user's messages; don't ask. If the user has only typed slash commands so far (no natural-language text to infer from), add the reply language to the same question round.
+
+**Someone else's mod** (the git remote/history belongs to another author, or the user says so): prefer not touching tracked files at all — offer `--out=<dir>` or, to keep `.modsmith/` in the folder, ignore it via `.git/info/exclude` (local, untracked) instead of editing the project's `.gitignore`. If nobody can answer (non-interactive run), apply the defaults from SKILL.md and mark them `(assumed)`.
 
 ## 3. New mod: scaffold from the official template
 
