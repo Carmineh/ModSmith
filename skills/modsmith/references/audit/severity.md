@@ -16,7 +16,7 @@ Something breaks badly or can be abused, in normal use.
 
 - Client/server desync: state changed on one side only, missing sync of block entity data, logic gated on the wrong side (`isClientSide` inverted or missing).
 - Works in singleplayer but not on dedicated servers (and doesn't crash): e.g. static state shared between integrated client and server.
-- Memory leaks: static collections holding `Level`, `Entity`, `Player`, `BlockEntity`, `ItemStack`; listeners never removed; caches without bounds or cleanup on world unload.
+- Memory leaks: static collections holding `Level`, `Entity`, `Player`, `BlockEntity`, `ItemStack`; listeners never removed; caches without bounds or cleanup on world unload. HIGH when it grows with play time or keeps whole worlds/players alive; MEDIUM for a small bounded map whose only cost is stale entries.
 - Performance: heavy work every tick for every entity/block entity (world scans, `getEntitiesOfClass` with big boxes, allocation-heavy loops, logging every tick), synchronous chunk loads, I/O on the main thread.
 - Threading: game state mutated from network/netty threads or custom threads without `enqueueWork`/`execute`.
 - Mixins that break compatibility: `@Overwrite`, broad `@Redirect`s on hot vanilla methods, injections without `require`, targeting fragile ordinals.
@@ -30,7 +30,7 @@ Something breaks badly or can be abused, in normal use.
 - Deprecated or legacy API for this version (e.g. raw NBT on ItemStacks in 1.20.5+, `new ResourceLocation(...)` in 1.21+).
 - Hardcoded tunables that should be config; magic numbers spread across classes.
 - Hand-written JSON that should come from datagen (risk of drift, typos), or committed generated files that are stale.
-- Missing translation keys, missing loot tables (block drops nothing), missing mining tags.
+- Missing translation keys, missing loot tables (block drops nothing), missing mining tags. A missing or broken loot table is HIGH when the block is valuable or part of progression (the player loses it by breaking it), and when it holds an inventory.
 - God classes, duplicated logic, unclear responsibilities that make changes risky.
 - Missing null/empty checks that don't crash today but will with likely changes or other mods.
 - Swallowed exceptions (`catch (Exception e) {}`) or `printStackTrace()` **on a path where a failure would hide a real problem** (loading data, saving, network handling). An empty catch around a harmless fallback (e.g. choosing a display name) is LOW.

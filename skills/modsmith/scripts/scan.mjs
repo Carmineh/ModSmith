@@ -92,6 +92,60 @@ const lineOf = (text, index) => text.slice(0, index).split("\n").length;
 
 // --------------------------------------------------------------------------- inventory
 
+/** Mod id from the loader metadata when gradle.properties doesn't have it (typical for Fabric). */
+function modIdFromMetadata(root, rels) {
+  const fabric = rels.find((r) => isMainResources(r) && r.endsWith("fabric.mod.json"));
+  if (fabric) {
+    try {
+      const id = JSON.parse(readText(path.join(root, fabric))).id;
+      if (typeof id === "string" && !id.includes("$")) return id;
+    } catch {
+      /* fall through */
+    }
+  }
+  const toml = rels.find((r) => isMainResources(r) && /mods\.toml$/.test(r));
+  if (toml) {
+    const m = readText(path.join(root, toml)).match(/^\s*modId\s*=\s*"([a-z0-9_]+)"/m);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+/** Ids in the mod's own namespace referenced by loot tables and recipes that match no item model or blockstate. */
+function checkDataReferences(root, rels, modId, registered, add) {
+  const known = new Set(registered);
+  for (const r of rels) {
+    const m = r.match(new RegExp(`assets/${escapeRe(modId)}/(?:models/item|models/block|blockstates|items)/(.+)\\.json$`));
+    if (m) known.add(m[1]);
+  }
+  if (!known.size) return;
+  const rx = new RegExp(`resources/data/[^/]+/(?:loot_tables?|recipes?)/.+\\.json$`);
+  const prefix = modId + ":";
+  const visit = (node, file) => {
+    if (Array.isArray(node)) return node.forEach((n) => visit(n, file));
+    if (!node || typeof node !== "object") return;
+    for (const [key, value] of Object.entries(node)) {
+      if (typeof value === "string" && ["name", "id", "item"].includes(key) && value.startsWith(prefix)) {
+        if (!known.has(value.slice(prefix.length))) {
+          add("unknown-id-in-data", "HIGH?",
+            "Loot table or recipe references an id in the mod's namespace that matches no model, blockstate or registration (typo?): the drop or recipe result silently fails.",
+            file, value);
+        }
+      } else {
+        visit(value, file);
+      }
+    }
+  };
+  for (const r of rels) {
+    if (!rx.test(r) || isGenerated(r)) continue;
+    try {
+      visit(JSON.parse(readText(path.join(root, r))), r);
+    } catch {
+      add("data-invalid-json", "HIGH", "Data file is not valid JSON and will be skipped.", r);
+    }
+  }
+}
+
 function buildInventory(root, rels) {
   const props = fs.existsSync(path.join(root, "gradle.properties"))
     ? readProperties(path.join(root, "gradle.properties"))
@@ -127,7 +181,7 @@ function buildInventory(root, rels) {
     loader: loader.length ? loader : ["unknown"],
     minecraft_version: mc,
     loader_version: props.neo_version || props.neoforge_version || props.loader_version || props.fabric_loader_version || props.forge_version || null,
-    mod_id: props.mod_id || props.modid || props.archives_base_name || null,
+    mod_id: props.mod_id || props.modid || modIdFromMetadata(root, rels) || props.archives_base_name || null,
     mappings,
     kotlin: codeFiles.some((r) => r.endsWith(".kt")),
     code_files: codeFiles.length,
@@ -498,6 +552,7 @@ function scan(root) {
   if (modId) {
     checkDataKeys(root, rels, modId, codecFields, add);
     checkItemModels(root, rels, modId, registeredNames, add, codeText.join("\n"));
+    checkDataReferences(root, rels, modId, registeredNames, add);
     const langRx = new RegExp(`assets/${escapeRe(modId)}/lang/en_us\\.json$`);
     if (!rels.some((r) => langRx.test(r))) {
       add("missing-lang", "MEDIUM", `No assets/${modId}/lang/en_us.json found (datagen output counts).`, "src/main/resources");
@@ -527,7 +582,11 @@ function scan(root) {
       for (const ext of [".java", ".kt"]) {
         for (const c of rels.filter((r) => r.endsWith(pathPart + ext))) {
           const t = readText(path.join(root, c));
-          if (/^\s*import\s+net\.minecraft\.client\./m.test(t) || /@Mixin\(\s*\{?\s*(Minecraft|\w*Renderer|\w*Screen|\w*Model)\b/.test(t)) {
+          if (
+            /^\s*import\s+net\.minecraft\.client\./m.test(t) ||
+            /@Mixin\(\s*\{?\s*(Minecraft|\w*Renderer|\w*Screen|\w*Model)\b/.test(t) ||
+            /@Mixin\([^)]*targets\s*=\s*\{?\s*"(net\.minecraft\.client\.|com\.mojang\.blaze3d\.)/.test(t)
+          ) {
             add("client-mixin-in-common-list", "CRITICAL?",
               "Mixin touching client classes listed in the common 'mixins' array (should be in 'client').", `${mcRel} → ${name}`);
           }

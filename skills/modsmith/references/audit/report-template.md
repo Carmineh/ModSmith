@@ -1,10 +1,10 @@
 # AUDIT.md template
 
-Use this structure for `.modsmith/AUDIT.md`. Omit the "Why it matters" lines when the profile says `expert`.
+Use this structure for `.modsmith/AUDIT.md`. Include the "Why it matters" lines only for `beginner`.
 
 ```markdown
 # <Mod name> — Audit
-_modsmith audit · <date> · <loader> <mc version> · commit <short sha> · scope: <all | path>_
+_modsmith audit · <date> · <loader> <mc version> · commit <short sha, or "no git"> · scope: <all | path>_
 
 ## Summary
 | Severity | Open | Fixed | Total |

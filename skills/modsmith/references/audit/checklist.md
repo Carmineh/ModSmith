@@ -8,6 +8,7 @@ Go area by area. Skip areas the mod doesn't have. For the correct idiom in each 
 - [ ] Dependencies declared in metadata with sensible version ranges (and `side`/`environment` where relevant); optional integrations really optional (no hard class references).
 - [ ] No leftover MDK/template content (example blocks, `examplemod`, template description/authors).
 - [ ] License present and consistent with metadata.
+- [ ] The build doesn't depend on user-global configuration (`~/.gradle/gradle.properties`, a specific `JAVA_HOME`): a fresh clone on another machine must build. Requirements such as "Gradle must run on JDK N" live in the project (daemon JVM criteria, README).
 - [ ] `.gitignore` excludes `build/`, `run/`, `.gradle/`, IDE files; no binaries/jars committed accidentally.
 
 ## 2. Sides (client vs server)
@@ -54,6 +55,8 @@ Technical checks miss most real bugs in content mods. For each core mechanic in 
 - [ ] **Random outcomes decided once.** A result checked in one place (`canCraft`) and re-rolled in another (`craft`) can produce a different, unchecked result (check-then-act). Insertion into output must use the actual result and handle "doesn't fit".
 - [ ] **Round-trips preserve state.** Entity → item → entity (capture/release, buckets, pickup), block → item → block (silk touch, wrench): age, health, cooldowns, owner, custom data survive, or loss is intentional.
 - [ ] **Validation of loaded data.** Invalid entries are rejected **with a log line naming the file and reason**; ranges are validated (`Codec.intRange`, `doubleRange`).
+- [ ] **Progression is reachable.** Follow the crafting/upgrade chain end to end: every step has a loadable recipe, every block drops itself (or its intended loot), recipe-unlock advancements trigger at a sensible moment. One broken link blocks everything after it.
+- [ ] **Material consistency** (usually a question for the author): tiers/materials behave like their vanilla counterparts where players expect it (hardness, tool level, fire resistance of netherite items, stack size).
 - [ ] **Balance-critical values** (yields, chances, costs) come from data/config, not magic numbers scattered in code.
 - [ ] **Player feedback** is translatable (`Component.translatable`), not hard-coded English.
 
