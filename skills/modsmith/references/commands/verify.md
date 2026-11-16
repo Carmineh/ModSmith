@@ -15,6 +15,8 @@ Use `./gradlew` on Unix shells and `gradlew.bat` (or `./gradlew` from Git Bash) 
 4. **Gametests** (if present) — `gradlew runGameTestServer`.
 5. **Client** — can't be meaningfully automated here. Give the user a short, specific in-game checklist instead of claiming it works.
 
+6. **Baseline** (static, quick): the same mod-level essentials `new` enforces — own creative tab containing all obtainable content, no template placeholders, every block with loot table/lang/mining tag, lang files with the same keys. Report gaps as "not blocking, should fix" with the command that fixes them.
+
 ## Report
 
 A small table: step → passed / failed / skipped (why) → key evidence (log line). Link failures to findings (`CRIT-01`) or suggest `fix`. Never report a step as passed if it didn't run.

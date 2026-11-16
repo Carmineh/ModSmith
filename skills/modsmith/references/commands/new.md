@@ -5,6 +5,11 @@ Syntax: `new <kind> <name> [details]`. Kinds: `block`, `item`, `blockentity`, `e
 ## Procedure
 
 0. If `DESIGN.md` exists, read it: find the milestone this request belongs to, follow its mechanics and the "design for reuse" grouping (variants = one parameterised class), and respect answered design questions. If the request needs an open question answered, ask it now (beginners: propose a default). If the request isn't in the plan, do it anyway and add it to the roadmap.
+0b. **Baseline check — on every `new` run, even when the request turns out to need no change** (already done, duplicate, small tweak). The rules below apply to the mod as a whole, not only to content added in this run, and the skill's rules may be newer than the mod. Check quickly and fix what's missing, telling the user what you added and why:
+   - the mod has blocks/items but **no creative tab of its own**, or existing content is missing from it or from the fitting vanilla tab (step 4b);
+   - **template placeholders** are still present (step 5b);
+   - existing content lacks something from the per-kind essentials (loot table, lang key in one of the mod's languages, mining tag).
+   Keep it proportionate: fix small gaps in the same run; for larger ones (e.g. a wanted integration never set up) propose them as the next step instead.
 1. Read the profile and look at **how the mod already does the same kind of thing**. Consistency with the existing codebase beats your preferred style — unless the existing pattern is itself a finding (then follow the correct idiom and mention why).
 2. Ask only what's needed and not obvious (e.g. for a block: does it need a block entity? a GUI? custom drops?). For beginners, propose a sensible default and go.
 3. Look up the loader idiom in `references/loaders/<loader>.md`, and the relevant `practices/` file (packets → networking.md, stored data → persistence.md, mixins → mixins.md).
