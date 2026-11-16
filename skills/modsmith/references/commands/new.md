@@ -10,6 +10,7 @@ Syntax: `new <kind> <name> [details]`. Kinds: `block`, `item`, `blockentity`, `e
 3. Look up the loader idiom in `references/loaders/<loader>.md`, and the relevant `practices/` file (packets → networking.md, stored data → persistence.md, mixins → mixins.md).
 4. Implement the **complete** feature, not just the class. A block isn't done until it has: registration, block item, blockstate + model + item model, texture placeholder reference, loot table, translation key, creative tab entry, tags (e.g. `mineable/pickaxe`), and ideally datagen providers for them. Write a checklist per kind and tick it off in your final report.
 5. Respect sides: client-only parts (renderers, screens, key mappings) go into client-only classes/registration.
+5b. Template placeholders (example mixins, example blocks/items, "Hello world" logs, `example_*` lang keys) don't belong in a mod with real content: on the first `new` run that adds real content, remove them (and their config entries) and say so. An empty example mixin still patches Minecraft for nothing.
 6. Verify (`build`, plus `runData` if datagen was added, `runServer` if registration/networking changed).
 
 ## Per-kind essentials
