@@ -21,6 +21,8 @@ _Created by `/modsmith init` on <date>. Edit freely; modsmith re-checks it again
 | Mod | Required? | Version range | Notes |
 |---|---|---|---|
 
+**Standard integrations wanted:** <recipe viewer: JEI | REI | EMI | none> · <Jade: yes | no> — <set up in build? integration code present?>
+
 **Soft integrations** (detected at runtime, not declared): <e.g. Create, Mekanism via ModList.isLoaded — what they change>
 
 ## Project structure

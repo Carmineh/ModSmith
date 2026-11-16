@@ -31,7 +31,7 @@ Then ask the user (one compact message, with your detected values as defaults so
 - **Docs language** — English by default (shareable); offer the user's language as the alternative.
 - **modsmith directory** — `.modsmith/` committed (recommended for own mods), `.modsmith/` gitignored, or an external folder (read-only use).
 - Anything you couldn't detect or that looks inconsistent.
-- Optional: goals for the mod (to orient future audits), target environments (client-only? server-required? both). Mention that `/modsmith plan` can turn their next ideas into a guided roadmap.
+- Optional: goals for the mod (to orient future audits), target environments (client-only? server-required? both). Mention that `/modsmith plan` can turn their next ideas into a guided roadmap. If the mod has machines or custom recipes but no recipe-viewer/Jade integration, note it in the profile as a suggestion (don't add it during init).
 
 Reply language: infer from the user's messages; don't ask. If the user has only typed slash commands so far (no natural-language text to infer from), add the reply language to the same question round.
 
@@ -44,6 +44,11 @@ This is a **guided path**: the idea comes first, because it decides the technica
 **Step 1 — the idea.** Ask the user to describe the mod in 1–3 sentences, with examples so they know what's expected ("a Create addon with a block that does X depending on RPM", "furnaces in several tiers", "new crops and a cooking system"). "Skip / just the template" is a valid answer. Ask the experience level in the same round.
 
 **Step 2 — choose platform from the idea.** Follow `plan.md` steps 2–3: restate the idea, ask only structure-changing questions, and **check required dependencies exist** for the candidate loader/version (Modrinth API or official pages). Then recommend loader and Minecraft version that satisfy them, in two sentences ("Create 6 is on NeoForge 1.21.1 but not on Fabric → NeoForge 1.21.1"). A required dependency missing for the user's preferred loader/version is a blocker: say it now, before anything is created. Without dependencies, for beginners recommend NeoForge or Fabric on the latest stable version with good docs.
+
+**Step 2b — standard integrations.** Players expect two things from almost every content mod: a **recipe viewer** (JEI; on Fabric also REI/EMI) and a **"what am I looking at" tooltip** (Jade, the WAILA successor). Ask whether to include them, recommended answer **yes** (beginners: one sentence on what each does). Don't force them: some mods (client tweaks, libraries, server-only) don't need them. If yes:
+- check each exists for the chosen loader/version (same check as Step 2); skip with a note if not;
+- add them as **optional** dependencies only: API as `compileOnly`, the full mod as dev-runtime only (so the user sees them in `runClient`), `optional`/`suggests` in the metadata — the mod must load without them;
+- record the choice in the profile and in `DESIGN.md` (Dependencies & integrations). No integration code is written yet: `new` adds it when content needs it (see `new.md`).
 
 **Step 3 — identity** (with suggested defaults): mod id (lowercase, `[a-z0-9_]`, 2–64 chars), display name, package (`com.<author>.<modid>`), author, license, language (Java recommended; Kotlin only if they want it), reply/docs language.
 
