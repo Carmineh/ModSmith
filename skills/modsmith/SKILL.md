@@ -66,7 +66,7 @@ When nobody can answer questions (CI, subagents, batch runs), don't block: use d
 
 ### Code references
 
-Documents cite code as `path/File.java:line`. Take line numbers from a per-file view (the Read tool, or `grep -n` on one file) — concatenating several files with `cat -n` numbers them as one stream and gives wrong references.
+Cite code with the **path relative to the mod's root**, always in the same form: `src/main/java/com/example/block/FooBlock.java:42` (resources likewise: `src/main/resources/data/<ns>/...`). No shortened package-relative paths — a full path is unambiguous and clickable both in documents and in chat links (in chat, link it as `[FooBlock.java:42](src/main/java/.../FooBlock.java:42)`). Take line numbers from a per-file view (the Read tool, or `grep -n` on one file) — concatenating several files with `cat -n` numbers them as one stream and gives wrong references.
 
 ## Adapting to the user's experience level
 

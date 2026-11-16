@@ -23,6 +23,7 @@ Goal: an honest, prioritized list of what should change in the mod, with evidenc
 Use `references/audit/report-template.md`. Each finding has: ID (`CRIT-01`, `HIGH-02`, `MED-03`, `LOW-04`), title, location (file:line), evidence (short code excerpt or exact behaviour), impact (concrete scenario), fix (what to do, and for which loader/version idiom), effort (S/M/L), and for beginners a "why it matters" line in plain language.
 
 Be calibrated:
+- Separate bugs from design questions: if the author could have meant it, it goes under "Questions for the author", not in the findings (see `severity.md`).
 - Don't inflate. Ten honest MEDIUMs are more useful than ten fake CRITICALs; inflation makes the user stop trusting the report.
 - Don't pad with LOW style nits to look thorough; group them.
 - Say what you did *not* check (e.g. "worldgen not reviewed", "couldn't run the server").

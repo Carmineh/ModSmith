@@ -44,6 +44,10 @@ Typical batches: data/resource-only fixes first (lowest risk), then one batch pe
 
 ### HIGH-01 — ...
 
+## Questions for the author
+Behaviour that may be intentional. Not counted in the Summary; becomes a finding (or is closed) once the author answers.
+- `Q-01` <what the code/data does> — <practical effect> — <what to change if it's not intended>.
+
 ## Grouped minor issues (LOW)
 - `LOW-01` naming: ... (files)
 - `LOW-02` ...

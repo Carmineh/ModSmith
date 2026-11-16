@@ -49,7 +49,7 @@ Payloads (direction, fields, handler, validation). What is saved and where (keys
 Required/optional mods, integrations.
 
 ## Observations
-Short list of things worth auditing. No severities here.
+Short list of things worth auditing. No severities here. Phrase possibly-intentional behaviour as a question ("are X and Y meant to share parents?"), not as a bug.
 ```
 
 For beginners, add a short "How to read this mod" paragraph at the top and explain the terms used. Keep the document factual: every claim should be traceable to a file.

@@ -41,6 +41,9 @@ _Created by `/modsmith init` on <date>. Edit freely; modsmith re-checks it again
 ## Conventions
 <observed conventions to keep consistent: registry class names, package layout, naming of ids, code style>
 
+## Inconsistencies noticed
+<things that disagree with each other — metadata vs files (license, authors, version), docs vs code, declared vs actual dependencies. Recorded here, not fixed by init.>
+
 ## Git
 - **Repository:** <yes | no>
 - **Default branch:** <e.g. main, mc1.21.1/dev>

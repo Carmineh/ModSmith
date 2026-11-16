@@ -31,6 +31,8 @@ If no jar exists yet, the project hasn't been built or synced: suggest `gradlew 
 
 Keep it targeted: read one class or method, not whole packages.
 
+**Trace the call path, not just one class.** Loaders often leave a vanilla class untouched and bypass it where it is *used* (e.g. a vanilla packet still writes a 16-bit value, but the loader's patched sender uses its own payload instead). Before concluding "X is limited/broken", find who calls it (`grep` the sources jar for the class name) and read that call site too.
+
 ## 3. Other evidence
 - The loader's docs for the **matching version** (docs.neoforged.net, docs.fabricmc.net, docs.minecraftforge.net) and porting primers.
 - **Observed behaviour**: if the published mod visibly does the thing (a renderer appears, a config option works), the API works as used, whatever memory says.
