@@ -1,0 +1,13 @@
+{
+  "name": "modsmith",
+  "owner": {
+    "name": "Carmineh"
+  },
+  "plugins": [
+    {
+      "name": "modsmith",
+      "source": "./",
+      "description": "Minecraft mod development & maintenance: init, study, audit, fix, new, port, verify, review."
+    }
+  ]
+}

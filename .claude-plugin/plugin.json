@@ -1,0 +1,20 @@
+{
+  "name": "modsmith",
+  "version": "0.1.0",
+  "description": "Create, study, audit, fix and port Minecraft Java mods (NeoForge, Fabric, Forge) with good engineering practices. Prioritized CRITICAL/HIGH/MEDIUM/LOW audits, version and loader ports, beginner-friendly explanations.",
+  "author": {
+    "name": "Carmineh"
+  },
+  "keywords": [
+    "minecraft",
+    "modding",
+    "neoforge",
+    "fabric",
+    "forge",
+    "audit",
+    "porting"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/Carmineh/ModSmith",
+  "homepage": "https://github.com/Carmineh/ModSmith"
+}

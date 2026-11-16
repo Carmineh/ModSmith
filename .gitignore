@@ -1,0 +1,12 @@
+# Skill-creator eval workspaces (test runs, outputs, benchmarks)
+*-workspace/
+
+# Python (legacy)
+__pycache__/
+*.pyc
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
