@@ -92,6 +92,8 @@ Check the registrar for `executesOn(HandlerThread.NETWORK)`; if present, the han
 - **Capabilities** (item/fluid/energy handlers exposed to other mods): `RegisterCapabilitiesEvent` → `event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TYPE, (be, side) -> be.getItemHandler(side))`.
 - **World-global data**: `SavedData` via `serverLevel.getDataStorage().computeIfAbsent(...)`; call `setDirty()`.
 
+**Menu data sync (`ContainerData`)**: vanilla's `ClientboundContainerSetDataPacket` writes 16-bit values, but NeoForge 1.21.1 patches `ServerPlayer`'s menu listener to send `AdvancedContainerSetDataPayload` with the full `int` when the client has NeoForge (verified in the 21.1.265 sources, `ServerPlayer.sendDataChange`). So on NeoForge, values above 32767 (energy, XP, progress) sync correctly and need no 16-bit cap. On Fabric/vanilla the 16-bit limit is real.
+
 ## 7. Config
 ```java
 public class Config {
