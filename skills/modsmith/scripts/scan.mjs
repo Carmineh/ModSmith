@@ -14,7 +14,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const SKIP_DIRS = new Set(["build", "run", "runs", ".gradle", ".git", ".idea", "out", "bin", "node_modules"]);
+const SKIP_DIRS = new Set(["build", "run", "runs", ".gradle", ".git", ".idea", "out", "bin", "node_modules", ".modsmith"]);
 const CODE_EXT = new Set([".java", ".kt"]);
 
 // --------------------------------------------------------------------------- utils
