@@ -34,5 +34,20 @@ High-level map of what moved. It is **not exhaustive** — for each version step
 - Recipe system reworked (recipe display, `RecipeBookCategory` registry), `Entity#hurt` split (`hurtServer`), equipment/armor model changes, many renames.
 - 1.21.4: client item model definitions (`assets/<ns>/items/*.json`); NeoForge `GatherDataEvent.Client` / `.Server` and `runClientData` / `runServerData`.
 
-## 1.21.5+
-Continued renames and data-driven systems. Always consult the primer for each step; port one minor version at a time when the gap is large.
+- 1.21.2 also: interaction results unified (`ItemInteractionResult` → `InteractionResult`, `sidedSuccess` gone), `MobSpawnType` → `EntitySpawnReason`, entity/BE renderers use render states, `SimpleJsonResourceReloadListener` is codec-based.
+- 1.21.4: item renderers (BEWLR) replaced by special model renderers; item colours by `ItemTintSource` referenced from the item definition JSON.
+
+## 1.21.5 – 1.21.11
+Orientation only, gathered from the NeoForge primers during a real port plan (2026-11); confirm each point in the primer for that version.
+- 1.21.5: `CompoundTag` getters return `Optional` / `getXOr(key, default)`; spawn eggs use textures (no programmatic colours); `Cow` gained variants (`AbstractCow` base); `moveTo` → `snapTo`; block removal side effects moved from `onRemove` to `BlockEntity#preRemoveSideEffects` + `affectNeighborsAfterRemoval`; tooltips take `TooltipDisplay` + `Consumer<Component>`.
+- 1.21.6: saving/loading through `ValueOutput` / `ValueInput` (block entities, entities); GUI rendering reworked.
+- 1.21.9: entity data on item stacks is `TypedEntityData` (type no longer in the `id` key of the tag); rendering via feature submission (`SubmitNodeCollector`); `level.isClientSide` field → `isClientSide()`. **NeoForge 21.9 transfer rework:** `IItemHandler`/`IFluidHandler`/`IEnergyStorage` and their templates → `ResourceHandler<ItemResource|FluidResource>` and `EnergyHandler` (old classes deprecated for removal). Inventory save formats can change: write a legacy reader.
+- 1.21.11: `ResourceLocation` → `Identifier`, several package moves.
+
+## 26.1+ (new version numbering)
+From 2026 Minecraft versions are year-based (`26.1`, `26.1.2`…). Orientation only, confirm in the 26.1 primer:
+- Java 25, Gradle 9.1+; NeoForge versions have four components (`26.1.2.x`); new MDK metadata template.
+- The game is **no longer obfuscated**: official names include parameter names, so **Parchment is not needed** from 26.1 on.
+- Further GUI/render renames (e.g. `GuiGraphics` → render-state extraction), immutable stack templates.
+
+Big jumps: port through a **stepping-stone version** (e.g. 1.21.1 → 1.21.11 → 26.1.x) where each stage compiles, choosing stones where your dependencies exist. Always read every primer on the way; this file only tells you where to look.

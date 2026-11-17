@@ -31,7 +31,7 @@ Then ask the user (one compact message, with your detected values as defaults so
 - **Docs language** — English by default (shareable); offer the user's language as the alternative.
 - **modsmith directory** — `.modsmith/` committed (recommended for own mods), `.modsmith/` gitignored, or an external folder (read-only use).
 - Anything you couldn't detect or that looks inconsistent.
-- **Parchment** (only if the project uses Mojang mappings without it): offer to add it. One or two sentences on why: Mojang's names have no parameter names or javadoc, so Minecraft code shows `p_41421_`; Parchment adds readable names and docs in the IDE, in generated overrides and in the sources modsmith reads to verify APIs. It changes nothing in the built mod. If yes, add it the way the loader reference says (`neoforge.md` / `fabric.md`) with the version from parchmentmc.org, then build once.
+- **Parchment** (only for Minecraft up to 1.21.x with Mojang mappings and no Parchment; from 26.1 the game ships unobfuscated with parameter names, so Parchment isn't needed): offer to add it. One or two sentences on why: Mojang's names have no parameter names or javadoc, so Minecraft code shows `p_41421_`; Parchment adds readable names and docs in the IDE, in generated overrides and in the sources modsmith reads to verify APIs. It changes nothing in the built mod. If yes, add it the way the loader reference says (`neoforge.md` / `fabric.md`) with the version from parchmentmc.org, then build once.
 - Optional: goals for the mod (to orient future audits), target environments (client-only? server-required? both). Mention that `/modsmith plan` can turn their next ideas into a guided roadmap. If the mod has machines or custom recipes but no recipe-viewer/Jade integration, note it in the profile as a suggestion (don't add it during init).
 
 Reply language: infer from the user's messages; don't ask. If the user has only typed slash commands so far (no natural-language text to infer from), add the reply language to the same question round.
@@ -61,7 +61,7 @@ Create the project **from the official template**, never by writing Gradle files
 
 Downloading requires the user's OK: say what you'll download and from where. Put the download in its own temporary folder, inspect it, then copy the template files into the project. Apply the user's mod id / package / name everywhere (properties, metadata, package directories, main class, mixin config names, assets/data namespace folders). If the download isn't possible, explain and stop rather than improvising a build.
 
-If the template uses Mojang mappings without Parchment (e.g. the Fabric template), add Parchment as described in the loader reference: recommended by default, tell the user in one line what it gives them.
+If the template uses Mojang mappings without Parchment (e.g. the Fabric template) and targets 1.21.x or older, add Parchment as described in the loader reference: recommended by default, tell the user in one line what it gives them.
 
 Add the required dependencies from Step 2 to the build and metadata, taking repository URLs and version strings from the dependency's official docs/Modrinth (never from memory).
 
