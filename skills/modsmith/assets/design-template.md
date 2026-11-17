@@ -32,7 +32,7 @@ Each milestone is small, playable and testable in game. Tick it when it's done (
 |---|---|---|---|
 | M1 | <first playable thing, e.g. tier-1 furnace that smelts> | `/modsmith new block tier1_furnace` | ☐ |
 | M2 | <…> | `/modsmith new …` | ☐ |
-| M3 | Polish: recipes, translations, creative tab, config | `/modsmith new recipe …`, `/modsmith new config …` | ☐ |
+| M3 | Polish: final textures, balance, extra languages, config options | `/modsmith new config …` | ☐ |
 | — | Check: build + dedicated server | `/modsmith verify` | ☐ |
 
 ## Out of scope (for now)
