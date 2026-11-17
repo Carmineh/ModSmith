@@ -6,6 +6,7 @@ When explaining to a beginner, translate these into the user's language and keep
 - **MDK / template** — the official starter project for a loader.
 - **Gradle** — the build tool: downloads Minecraft and the loader, compiles the mod, runs the game for testing (`gradlew runClient`).
 - **Mappings** — the names used for Minecraft's code (the original is obfuscated). Mojang mappings ("Mojmap") and Yarn are two naming sets; the same thing can have different names.
+- **Parchment** — an add-on to Mojang mappings that fills in what they lack: parameter names and documentation comments. Only affects how code reads in the editor, not the finished mod.
 - **Registry / registering** — telling the game "this block/item/entity exists, with this id". Everything a mod adds must be registered at the right moment.
 - **Resource location / id** — the name of something, like `mymod:magic_cow` (namespace `mymod`, path `magic_cow`).
 - **Client / server (sides)** — the client draws the game and reads your input; the server runs the rules and saves the world. In singleplayer both run inside your game. Code meant for one side can crash or misbehave on the other.

@@ -6,7 +6,7 @@ APIs change between NeoForge versions. Treat this file as orientation, then conf
 1. Project setup · 2. Entry points & buses · 3. Registration · 4. Events · 5. Networking · 6. Data: components, attachments, capabilities · 7. Config · 8. Client · 9. Datagen · 10. Gradle tasks
 
 ## 1. Project setup
-- Gradle plugin: ModDevGradle (`net.neoforged.moddev`, recommended by the MDK) or NeoGradle (`net.neoforged.gradle.userdev`). Mojang mappings + Parchment for parameter names.
+- Gradle plugin: ModDevGradle (`net.neoforged.moddev`, recommended by the MDK) or NeoGradle (`net.neoforged.gradle.userdev`). Mojang mappings + Parchment for parameter names and javadoc (the MDK enables it: `parchment { mappingsVersion; minecraftVersion }` in `build.gradle`, versions in `gradle.properties`; if missing, take the versions from parchmentmc.org).
 - Metadata: `META-INF/neoforge.mods.toml` (1.20.5+; before that `mods.toml`). The MDK keeps it in `src/main/templates/` and expands `${mod_id}` etc. from `gradle.properties`.
 - Java 21.
 

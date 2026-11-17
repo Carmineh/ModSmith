@@ -1,5 +1,7 @@
 # Fabric idioms (focus: 1.20.5 – 1.21.1)
 
+**Parchment on Fabric** (Mojmap projects only): the Fabric template uses plain `loom.officialMojangMappings()`, which has no parameter names or javadoc. Add them by layering Parchment: `mappings loom.layered { officialMojangMappings(); parchment("org.parchmentmc.data:parchment-<mc>:<version>@zip") }`, plus the `https://maven.parchmentmc.org` repository. Take `<mc>`/`<version>` from parchmentmc.org for the project's Minecraft version (sometimes only the previous minor has data, e.g. 1.21 data for 1.21.1), never from memory. Yarn projects already have parameter names.
+
 Fabric projects use either **Yarn** or **Mojang (Mojmap)** names — check `build.gradle` (`mappings loom.officialMojangMappings()` vs `mappings "net.fabricmc:yarn:..."`). Class and method names below are given as Yarn / Mojmap where they differ. Verify in the project's sources (`gradlew genSources`) before writing code.
 
 ## Project setup
