@@ -5,6 +5,11 @@ Input can be:
 - a bug description ("cows stop producing after relog"),
 - a crash report / `latest.log` excerpt / stack trace (pasted, or a path like `run/crash-reports/...`).
 
+**No argument** (`/modsmith fix` alone): don't ask an open question. Look for something to fix, in this order, and propose it:
+1. `AUDIT.md` with open findings → show the counts and the next batch from its Fix plan, and offer to start it.
+2. A recent crash report (`run/crash-reports/`) or errors in `run/logs/latest.log` → offer to diagnose it.
+3. Nothing found → say so in one line and offer the two ways in: run `audit` first, or describe the bug / paste the crash.
+
 ## Procedure
 
 1. **Read the profile and git state.** If on the main branch and the fix is non-trivial or a batch, propose a branch `fix/<short-topic>`.
