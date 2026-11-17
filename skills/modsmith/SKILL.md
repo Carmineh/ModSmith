@@ -39,14 +39,15 @@ Modsmith should always leave the user knowing **what to do next**. New mods foll
 
 ## The profile
 
-Every command except `init` starts by reading `.modsmith/profile.md` in the mod's root. It records loader, Minecraft version, language, mappings, mod id, dependencies, the user's experience level and project conventions. It exists so the user is never asked the same questions twice.
+Every command except `init` starts by reading `.modsmith/PROFILE.md` in the mod's root. It records loader, Minecraft version, language, mappings, mod id, dependencies, the user's experience level and project conventions. It exists so the user is never asked the same questions twice.
 
 - If it's missing, offer to run `init` first (you can do a quick inline detection if the user just wants a fast answer, but say the profile would make future runs better).
 - If what you see in the build files contradicts the profile (e.g. the version was bumped), trust the build files, tell the user, and update the profile.
+- Older modsmith versions wrote `profile.md` in lowercase: read it if `PROFILE.md` is missing, and rename it to `PROFILE.md` the next time you write the profile (two-step rename via a temporary name, so it also works on case-insensitive file systems like Windows and macOS). All documents in the modsmith directory are uppercase: `PROFILE.md`, `DESIGN.md`, `STUDY.md`, `AUDIT.md`, `PORT-<target>.md`.
 
 ### Where outputs go
 
-Commands write their documents (`profile.md`, `DESIGN.md`, `STUDY.md`, `AUDIT.md`, `PORT-<target>.md`) to the **modsmith directory**:
+Commands write their documents (`PROFILE.md`, `DESIGN.md`, `STUDY.md`, `AUDIT.md`, `PORT-<target>.md`) to the **modsmith directory**:
 - default: `.modsmith/` in the mod's root;
 - `--out=<dir>` on any command: write there instead and don't create anything in the mod (use this for read-only studies, or when auditing someone else's mod);
 - the profile can set a permanent location (`modsmith_dir`).
@@ -114,6 +115,6 @@ Load only what the current task needs.
 - `references/practices/` — `sides.md`, `networking.md`, `persistence.md`, `mixins.md`, `performance.md`, `compatibility.md`. Read the relevant one when writing or reviewing code in that area.
 - `references/api-lookup.md` — how to verify an API against the real Minecraft/loader classes in the project's Gradle cache.
 - `references/glossary.md` — plain-language definitions for beginners.
-- `assets/profile-template.md` — template for `.modsmith/profile.md`.
+- `assets/profile-template.md` — template for `.modsmith/PROFILE.md`.
 - `assets/design-template.md` — template for `DESIGN.md` (idea, mechanics, content, dependencies, open questions, roadmap).
 - `scripts/scan.mjs` — fast heuristic scanner (`node scripts/scan.mjs <mod-root>`; Node 18+ ships with Claude Code, nothing to install). It produces leads, not verdicts: confirm every hit by reading the code before reporting it.

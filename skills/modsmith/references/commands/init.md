@@ -1,6 +1,6 @@
 # init — set up the project and the profile
 
-Goal: end with a working project under git and a complete `.modsmith/profile.md`, asking the user as few questions as possible.
+Goal: end with a working project under git and a complete `.modsmith/PROFILE.md`, asking the user as few questions as possible.
 
 ## 1. Detect the situation
 
@@ -11,7 +11,7 @@ Look at the current directory (or the path the user gave):
 | Existing mod, with git | `build.gradle(.kts)` + `.git/` | §2 |
 | Existing mod, no git | `build.gradle(.kts)`, no `.git/` | §2, then §4 |
 | Empty / new folder | no Gradle files | §3 |
-| Profile already exists | `.modsmith/profile.md` | Show it, ask what changed, re-detect, update |
+| Profile already exists | `.modsmith/PROFILE.md` | Show it, ask what changed, re-detect, update |
 
 If the folder contains something that isn't a mod (or several mods), ask before doing anything.
 
@@ -77,4 +77,4 @@ Then run `./gradlew build` (Windows: `gradlew.bat build`) once to confirm the te
 
 ## 5. Write the profile
 
-Copy `assets/profile-template.md` to `profile.md` in the modsmith directory (`--out` if given, else `.modsmith/`) and fill it. The commit-or-gitignore question applies only when that directory is inside the mod's repository. Mark anything unverified with `(?)`. Then show a short summary of the profile and suggest the next command: `study` for existing mods; for new mods the first roadmap milestone from `DESIGN.md` (or `plan` if the user skipped the idea).
+Copy `assets/profile-template.md` to `PROFILE.md` in the modsmith directory (`--out` if given, else `.modsmith/`) and fill it. The commit-or-gitignore question applies only when that directory is inside the mod's repository. Mark anything unverified with `(?)`. Then show a short summary of the profile and suggest the next command: `study` for existing mods; for new mods the first roadmap milestone from `DESIGN.md` (or `plan` if the user skipped the idea).

@@ -50,4 +50,4 @@ Order steps so the project compiles as early as possible: build setup → metada
 
 ## Stage 4 — Close
 
-Update `.modsmith/profile.md` (loader/version/mappings/deps), mark the plan complete, and list anything left (manual tests, features dropped, follow-ups).
+Update `.modsmith/PROFILE.md` (loader/version/mappings/deps), mark the plan complete, and list anything left (manual tests, features dropped, follow-ups).

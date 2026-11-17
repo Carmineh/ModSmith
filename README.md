@@ -6,7 +6,7 @@
 
 | Command | What it does |
 |---|---|
-| `/modsmith init` | Detects the project (or scaffolds a new one from the official template), sets up git, and writes `.modsmith/profile.md` (loader, version, language, experience level…) so you're never asked twice |
+| `/modsmith init` | Detects the project (or scaffolds a new one from the official template), sets up git, and writes `.modsmith/PROFILE.md` (loader, version, language, experience level…) so you're never asked twice |
 | `/modsmith plan [idea]` | Turns an idea ("tiered furnaces", "a Create addon driven by RPM") into `.modsmith/DESIGN.md`: mechanics, content, dependency availability check, open design questions and a roadmap of small playable milestones, each mapped to the command that builds it. Run by `init` on new mods |
 | `/modsmith study [area]` | Maps the mod's architecture into `.modsmith/STUDY.md`: entry points, registries, events, networking, persistence, mixins, key gameplay flows |
 | `/modsmith audit [--scope=path] [--min=LEVEL]` | Prioritized report in `.modsmith/AUDIT.md` with **CRITICAL / HIGH / MEDIUM / LOW** findings, each with evidence, impact, fix and effort |
