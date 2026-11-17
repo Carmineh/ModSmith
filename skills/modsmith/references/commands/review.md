@@ -1,6 +1,8 @@
 # review — check pending changes before committing
 
-Scope: `git diff` (staged + unstaged) and untracked files, or `review <ref>` to compare against a branch/commit (e.g. `review main`).
+Scope: `git diff` (staged + unstaged) and untracked files, or `review <ref>` to compare against a branch/commit (e.g. `review main`). Without git, compare against the pre-change copies that `fix`/`new` keep in `.modsmith/backup/` and say which batches the review covers.
+
+Also check change hygiene: line endings and encoding unchanged, no leftover debug code, and **network or save format changes** flagged for the release notes (a changed payload layout disconnects clients running the previous build: bump the mod version).
 
 ## Procedure
 
