@@ -12,7 +12,7 @@ Use `./gradlew` on Unix shells and `gradlew.bat` (or `./gradlew` from Git Bash) 
    - First run: the server stops asking to accept the EULA. Tell the user; `run/eula.txt` must contain `eula=true`, which means accepting Mojang's EULA (https://aka.ms/MinecraftEULA) — this is the user's decision, never set it yourself without their explicit OK.
    - Pass `--args="--nogui"` if needed (or rely on the run config). Wait for `Done (` in the log, then stop the server by sending `stop` on stdin, or kill the process after reading the log.
    - Look for: crashes, `NoClassDefFoundError`/`ClassNotFoundException` mentioning `client`, mixin errors/warnings, registry errors, "missing" translation or model errors, exceptions logged by the mod.
-4. **Gametests** (if present) — `gradlew runGameTestServer`.
+4. **Gametests** (if present) — `gradlew runGameTestServer`. If the user agrees to add gametests for the core mechanics, prove each new test can fail: break the mechanic on purpose once (e.g. make the filter accept everything), check that the test fails with a clear message, then restore the code. A test that can't fail proves nothing. Keep test structures and test classes out of the release jar where the loader allows it, or say that they ship.
 5. **Client** — can't be meaningfully automated here. Give the user a short, specific in-game checklist instead of claiming it works.
 
 6. **Baseline** (static, quick): the same mod-level essentials `new` enforces — own creative tab containing all obtainable content, no template placeholders, every block with loot table/lang/mining tag, lang files with the same keys. Report gaps as "not blocking, should fix" with the command that fixes them.
