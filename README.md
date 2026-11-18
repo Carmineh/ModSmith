@@ -42,7 +42,7 @@ You can also just talk normally ("my mod crashes on the server, here's the log")
 
 ### As a Claude Code plugin (recommended)
 
-**Claude desktop app:** open the plugin **Marketplace**, choose to add a marketplace from a repository, enter `Carmineh/ModSmith` (or `https://github.com/Carmineh/ModSmith`), then install **modsmith** from it. Typing the `/plugin` commands in the app's message box is not enough.
+**Claude desktop app:** go to **Marketplace → Add → Add from repository**, enter `Carmineh/ModSmith`, then install **modsmith** from it. Typing the `/plugin` commands in the app's message box is not enough.
 
 **Claude Code in a terminal:**
 
