@@ -1,4 +1,4 @@
-# audit — prioritized findings report
+# audit: prioritized findings report
 
 Goal: an honest, prioritized list of what should change in the mod, with evidence. Arguments: `--scope=<path>` to limit the files, `--min=<LEVEL>` to report only that severity and above.
 

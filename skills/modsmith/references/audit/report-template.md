@@ -3,7 +3,7 @@
 Use this structure for `.modsmith/AUDIT.md`. Include the "Why it matters" lines only for `beginner`.
 
 ```markdown
-# <Mod name> — Audit
+# <Mod name>: Audit
 _modsmith audit · <date> · <loader> <mc version> · commit <short sha, or "no git"> · scope: <all | path>_
 
 ## Summary
@@ -25,13 +25,13 @@ Group open findings into batches that can each become one `fix` run / one commit
 
 | Batch | Findings | Files | Effort | Notes |
 |---|---|---|---|---|
-| 1 — <theme> | <IDs> | <files> | S/M/L | <e.g. "data only, no code" or "changes saved keys → keep reading the old key"> |
+| 1: <theme> | <IDs> | <files> | S/M/L | <e.g. "data only, no code" or "changes saved keys → keep reading the old key"> |
 
 Typical batches: data/resource-only fixes first (lowest risk), then one batch per mechanic or per file, then cross-cutting refactors last.
 
 ## Findings
 
-### CRIT-01 — <short title>  `open`
+### CRIT-01: <short title>  `open`
 - **Where:** `src/main/java/.../Foo.java:42`
 - **Evidence:**
   ```java
@@ -42,11 +42,11 @@ Typical batches: data/resource-only fixes first (lowest risk), then one batch pe
 - **Fix:** what to change, using the idiom for <loader> <version>.
 - **Effort:** S | M | L
 
-### HIGH-01 — ...
+### HIGH-01: ...
 
 ## Questions for the author
 Behaviour that may be intentional. Not counted in the Summary; becomes a finding (or is closed) once the author answers.
-- `Q-01` <what the code/data does> — <practical effect> — <what to change if it's not intended>.
+- `Q-01` <what the code/data does>: <practical effect>, <what to change if it's not intended>.
 
 ## Grouped minor issues (LOW)
 - `LOW-01` naming: ... (files)

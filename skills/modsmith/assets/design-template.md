@@ -1,4 +1,4 @@
-# <Mod name> — Design
+# <Mod name>: Design
 _Created by `/modsmith plan` on <date>. This is the mod's plan: edit it freely. `new` reads it, `audit` compares it with the code._
 
 ## Idea
@@ -23,7 +23,7 @@ Design for reuse: variants of the same thing (tiers, colours, materials) are **o
 
 ## Open design questions
 Decisions that change the code structure. Answer them before the milestone that needs them.
-- [ ] Q1 <e.g. Do higher tiers need fuel, or Create rotation only?> — needed by M2
+- [ ] Q1 <e.g. Do higher tiers need fuel, or Create rotation only?>: needed by M2
 
 ## Roadmap
 Each milestone is small, playable and testable in game. Tick it when it's done (`new` and `fix` update this list).
@@ -33,7 +33,7 @@ Each milestone is small, playable and testable in game. Tick it when it's done (
 | M1 | <first playable thing, e.g. tier-1 furnace that smelts> | `/modsmith new block tier1_furnace` | ☐ |
 | M2 | <…> | `/modsmith new …` | ☐ |
 | M3 | Polish: final textures, balance, extra languages, config options | `/modsmith new config …` | ☐ |
-| — | Check: build + dedicated server | `/modsmith verify` | ☐ |
+| final | Check: build + dedicated server | `/modsmith verify` | ☐ |
 
 ## Out of scope (for now)
 <Ideas mentioned but deliberately postponed, so they don't creep into early milestones.>

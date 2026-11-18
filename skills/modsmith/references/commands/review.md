@@ -1,4 +1,4 @@
-# review — check pending changes before committing
+# review: check pending changes before committing
 
 Scope: `git diff` (staged + unstaged) and untracked files, or `review <ref>` to compare against a branch/commit (e.g. `review main`). Without git, compare against the pre-change copies that `fix`/`new` keep in `.modsmith/backup/` and say which batches the review covers.
 

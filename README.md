@@ -1,4 +1,4 @@
-# Modsmith — a Claude skill for Minecraft mod development
+# Modsmith: a Claude skill for Minecraft mod development
 
 `modsmith` is a [Claude Code](https://claude.com/claude-code) skill that helps you **create, understand, fix, audit and port Minecraft Java mods** (NeoForge, Fabric, Forge) following good engineering practices. It works for first-time modders (it explains concepts and picks safe defaults) and for experienced developers (terse, technical).
 
@@ -13,17 +13,17 @@
 | `/modsmith fix <ID \| description \| crash log>` | Root-cause fix with minimal changes, save-compatibility checks and verification; updates the audit |
 | `/modsmith new <kind> <name>` | Adds a complete feature (block, item, entity, block entity, menu, packet, command, config, mixin…) the idiomatic way, including models, loot, lang, tags, datagen |
 | `/modsmith port <target>` | Migrates to another Minecraft version (`port 1.21.1`), another loader (`port neoforge`), both (`port neoforge@1.21.1`, done in two stages), or adds a loader (`port +fabric`, multiloader) |
-| `/modsmith verify` | Build, datagen, headless dedicated-server smoke test, gametests — with an honest report |
+| `/modsmith verify` | Build, datagen, headless dedicated-server smoke test, gametests, with an honest report |
 | `/modsmith review` | Audits only your uncommitted changes before you commit |
 
-You can also just talk normally ("my mod crashes on the server, here's the log") — the skill maps the request to the right command.
+You can also just talk normally ("my mod crashes on the server, here's the log"): the skill maps the request to the right command.
 
 ## Severity scale
 
-- **CRITICAL** — crashes, save corruption, dedicated-server crashes, exploitable client→server trust.
-- **HIGH** — desync, memory leaks, heavy per-tick work, threading bugs, incompatible mixins.
-- **MEDIUM** — deprecated APIs, hardcoded values, missing datagen/translations, maintainability debt.
-- **LOW** — naming, structure, docs, warnings.
+- **CRITICAL**: crashes, save corruption, dedicated-server crashes, exploitable client→server trust.
+- **HIGH**: desync, memory leaks, heavy per-tick work, threading bugs, incompatible mixins.
+- **MEDIUM**: deprecated APIs, hardcoded values, missing datagen/translations, maintainability debt.
+- **LOW**: naming, structure, docs, warnings.
 
 ## Installation
 
@@ -36,7 +36,7 @@ Inside Claude Code:
 /plugin install modsmith@modsmith
 ```
 
-Update later with `/plugin update`. Installed as a plugin, the skill's commands are namespaced: `/modsmith:modsmith audit` (or just ask in plain words — "audit my mod" — and Claude picks the skill).
+Update later with `/plugin update`. Installed as a plugin, the skill's commands are namespaced: `/modsmith:modsmith audit` (or just ask in plain words, "audit my mod": and Claude picks the skill).
 
 ### With the generic skills CLI
 
@@ -85,7 +85,7 @@ skills/modsmith/
 
 ## Status
 
-Early version, focused on NeoForge/Fabric 1.20.5 – 1.21.1. Loader and version references are orientation material: the skill is instructed to verify APIs against the actual project before writing code. Contributions and corrections welcome.
+Early version, focused on NeoForge/Fabric 1.20.5 to 1.21.1. Loader and version references are orientation material: the skill is instructed to verify APIs against the actual project before writing code. Contributions and corrections welcome.
 
 ## License
 

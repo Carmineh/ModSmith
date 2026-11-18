@@ -22,7 +22,7 @@ See `practices/sides.md`.
 - [ ] Registration is unconditional: no `if (ModList.isLoaded(...)) register(...)`. What a mod registers must not depend on which other mods are installed (registry mismatch between client and server, items vanishing from worlds when a pack changes). Hide or disable content instead.
 - [ ] A mod that adds blocks/items has its **own creative tab** containing all of them (translated title, own icon), and they also appear in the fitting vanilla tabs. Obtainable items missing from every tab are MEDIUM (players can't find them); a missing mod tab is LOW–MEDIUM. Debug/test items in public tabs → question for the author.
 - [ ] Every registered item has a model and every model references existing textures/fluids (no purple-black items, no orphan files). Prefer datagen for models so they follow registration.
-- [ ] Everything registered through the loader's registry mechanism at the right time (DeferredRegister / `Registry.register` in initializer) — no `new Block(...)` outside registration, no registry access before registries are populated.
+- [ ] Everything registered through the loader's registry mechanism at the right time (DeferredRegister / `Registry.register` in initializer): no `new Block(...)` outside registration, no registry access before registries are populated.
 - [ ] Registry names lowercase, stable, namespaced with mod id.
 - [ ] Every block has a block item (if obtainable), loot table, model/blockstate, lang key, mining tags; every item has model + lang; creative tab entries.
 
@@ -36,13 +36,13 @@ See `practices/networking.md`.
 ## 5. Persistence & data
 - [ ] Save keys stable and namespaced; load is tolerant of missing/old keys.
 - [ ] Block entities call `setChanged()` after modifying saved state; sync to client when the client renders that state.
-- [ ] Per-stack data via data components (1.20.5+), per-entity/chunk/level data via attachments/SavedData (NeoForge) or the appropriate Fabric API — not via fragile static maps.
+- [ ] Per-stack data via data components (1.20.5+), per-entity/chunk/level data via attachments/SavedData (NeoForge) or the appropriate Fabric API: not via fragile static maps.
 - [ ] Resource folders use the correct names for the version (1.21+: `recipe/`, `loot_table/`, `tags/block/`, `tags/item/`, `advancement/`…).
 - [ ] Datagen present and up to date if used; generated files committed consistently.
 See `practices/persistence.md`.
 
 ## 6. Events & game logic
-- [ ] Event handlers registered on the correct bus (mod bus vs game bus on NeoForge/Forge) — a handler on the wrong bus silently never fires.
+- [ ] Event handlers registered on the correct bus (mod bus vs game bus on NeoForge/Forge): a handler on the wrong bus silently never fires.
 - [ ] Handlers check side and cheap conditions first (early return).
 - [ ] Cancelling/modifying events only when intended; no assumptions that other mods won't touch the same event.
 - [ ] Entity/player references not held beyond their lifetime (store UUIDs, resolve when needed).
@@ -51,7 +51,7 @@ See `practices/persistence.md`.
 Technical checks miss most real bugs in content mods. For each core mechanic in STUDY.md, ask:
 - [ ] **Documented = implemented.** Every feature, config option, JSON field or script parameter mentioned in README/docs/KubeJS bindings is actually read somewhere in game logic (grep the accessor). Parsed-but-unused fields are HIGH when users rely on them.
 - [ ] **Data matches code.** The mod's own JSON files (custom data folders such as `data/<modid>/<thing>/`) use exactly the keys the codec declares. Unknown keys are silently ignored by Mojang codecs, so a typo falls back to the default with no error. Check every file, not one sample.
-- [ ] **Timers and cooldowns progress.** Every counter written (cooldown, timer, age, progress) has a code path that decrements it or compares it to game time — including counters stored on items, which never tick on their own.
+- [ ] **Timers and cooldowns progress.** Every counter written (cooldown, timer, age, progress) has a code path that decrements it or compares it to game time: including counters stored on items, which never tick on their own.
 - [ ] **Random outcomes decided once.** A result checked in one place (`canCraft`) and re-rolled in another (`craft`) can produce a different, unchecked result (check-then-act). Insertion into output must use the actual result and handle "doesn't fit".
 - [ ] **Round-trips preserve state.** Entity → item → entity (capture/release, buckets, pickup), block → item → block (silk touch, wrench): age, health, cooldowns, owner, custom data survive, or loss is intentional.
 - [ ] **Validation of loaded data.** Invalid entries are rejected **with a log line naming the file and reason**; ranges are validated (`Codec.intRange`, `doubleRange`).

@@ -2,7 +2,7 @@
 
 Severity measures **realistic impact on players, servers and worlds**, weighted by likelihood. Ask: "What is the worst thing that plausibly happens, to whom, and how often?"
 
-## CRITICAL — must fix before the next release
+## CRITICAL: must fix before the next release
 
 Something breaks badly or can be abused, in normal use.
 
@@ -12,7 +12,7 @@ Something breaks badly or can be abused, in normal use.
 - Server trusts the client: packet handlers that accept positions, item stacks, amounts, entity ids, or "do X" commands without validation → duplication, arbitrary item creation, griefing at distance, OP-only actions without permission checks.
 - Infinite loops / unbounded recursion / unbounded memory growth reachable in normal play.
 
-## HIGH — fix soon; will hurt real users
+## HIGH: fix soon; will hurt real users
 
 - Client/server desync: state changed on one side only, missing sync of block entity data, logic gated on the wrong side (`isClientSide` inverted or missing).
 - Works in singleplayer but not on dedicated servers (and doesn't crash): e.g. static state shared between integrated client and server.
@@ -25,7 +25,7 @@ Something breaks badly or can be abused, in normal use.
 - Gameplay-breaking logic or balance bugs: wrong results from machines, cooldowns that never expire, mutation/drop chances silently at 100%, state lost on capture/release that players can exploit. (Purely cosmetic logic bugs are MEDIUM or LOW.)
 - Network traffic proportional to entities/block entities × ticks (syncing values that change every tick).
 
-## MEDIUM — maintainability and correctness debt
+## MEDIUM: maintainability and correctness debt
 
 - Deprecated or legacy API for this version (e.g. raw NBT on ItemStacks in 1.20.5+, `new ResourceLocation(...)` in 1.21+).
 - Hardcoded tunables that should be config; magic numbers spread across classes.
@@ -35,7 +35,7 @@ Something breaks badly or can be abused, in normal use.
 - Missing null/empty checks that don't crash today but will with likely changes or other mods.
 - Swallowed exceptions (`catch (Exception e) {}`) or `printStackTrace()` **on a path where a failure would hide a real problem** (loading data, saving, network handling). An empty catch around a harmless fallback (e.g. choosing a display name) is LOW.
 
-## LOW — polish
+## LOW: polish
 
 - Naming, package structure, formatting, comments, README/docs.
 - Compiler warnings, unused code, minor inefficiencies off the hot path.

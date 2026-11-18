@@ -4,7 +4,7 @@ Forge and NeoForge share history (NeoForge forked in 2023) and look alike, but d
 
 ## Setup
 - ForgeGradle (`net.minecraftforge.gradle`), metadata in `META-INF/mods.toml`.
-- Older Forge projects (≤1.20.1) are very common — many audits will be on 1.20.1/1.19.2/1.18.2 code.
+- Older Forge projects (≤1.20.1) are very common: many audits will be on 1.20.1/1.19.2/1.18.2 code.
 
 ## Entry point
 ```java

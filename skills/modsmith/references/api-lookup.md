@@ -12,9 +12,9 @@ The build already downloaded them. Typical locations (paths vary by plugin versi
 | Fabric Loom | Named (Mojmap/Yarn) jars usable with `javap`: `~/.gradle/caches/fabric-loom/minecraftMaven/net/minecraft/` (`minecraft-merged`, or `minecraft-common` + `minecraft-clientonly` when the project splits client sources; pick the folder whose name contains the project's mappings). The jars directly under `fabric-loom/<mc version>/` use intermediary names. Sources exist only after `gradlew genSources`. |
 | Any library | `~/.gradle/caches/modules-2/files-2.1/<group>/<artifact>/<version>/` |
 
-**Which version is on the classpath:** ModDevGradle writes the resolved classpath to `<project>/build/moddev/*Classpath.txt` — use it to pick the exact jar versions instead of the newest one in the cache.
+**Which version is on the classpath:** ModDevGradle writes the resolved classpath to `<project>/build/moddev/*Classpath.txt`: use it to pick the exact jar versions instead of the newest one in the cache.
 
-**FML classes** (`EventBusSubscriber`, `ConfigTracker`, `ModContainer`, `@Mod`) are not in the NeoForge jar: they live in the FancyModLoader artifacts, `~/.gradle/caches/modules-2/files-2.1/net.neoforged.fancymodloader/loader/<version>/` (often without a sources jar — use `javap`).
+**FML classes** (`EventBusSubscriber`, `ConfigTracker`, `ModContainer`, `@Mod`) are not in the NeoForge jar: they live in the FancyModLoader artifacts, `~/.gradle/caches/modules-2/files-2.1/net.neoforged.fancymodloader/loader/<version>/` (often without a sources jar: use `javap`).
 
 Search for them instead of guessing the path:
 ```bash

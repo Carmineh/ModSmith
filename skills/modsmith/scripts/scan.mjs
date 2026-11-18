@@ -217,7 +217,7 @@ const LINE_CHECKS = [
   ["new-resource-location", "CRITICAL?",
     "new ResourceLocation(...) is not accessible since 1.21 (use fromNamespaceAndPath/parse).",
     /\bnew\s+ResourceLocation\s*\(/, true, "1.21"],
-  ["item-nbt-api", "MEDIUM?", "ItemStack NBT API (getTag/getOrCreateTag/setTag) — replaced by data components in 1.20.5+.",
+  ["item-nbt-api", "MEDIUM?", "ItemStack NBT API (getTag/getOrCreateTag/setTag): replaced by data components in 1.20.5+.",
     /\.(getOrCreateTag|getTag)\s*\(\s*\)|\.setTag\s*\(/, true, "1.20.5"],
   ["static-collection-of-game-objects", "HIGH?",
     "Static collection keyed/valued by game objects or UUIDs: possible memory leak, unsaved state, or state shared between logical sides.",
@@ -231,17 +231,17 @@ const LINE_CHECKS = [
 
 // Locations to review manually (not problems per se).
 const REVIEW_POINTS = [
-  ["tick-hooks", "Tick hooks — check early returns, side checks and throttling.",
+  ["tick-hooks", "Tick hooks: check early returns, side checks and throttling.",
     /\b(EntityTickEvent|LevelTickEvent|ServerTickEvent|PlayerTickEvent|TickEvent|ServerTickEvents|ServerEntityEvents|void\s+tick\s*\(|serverTick|clientTick)\b/],
-  ["entity-queries", "Entity/area queries — check radius and frequency.",
+  ["entity-queries", "Entity/area queries: check radius and frequency.",
     /\b(getEntitiesOfClass|getEntities|getNearbyEntities|BlockPos\.betweenClosed|BlockPos\.withinManhattan)\s*\(/],
-  ["server-bound-packets", "Client→server payload handlers — check server-side validation.",
+  ["server-bound-packets", "Client→server payload handlers: check server-side validation.",
     /\b(playToServer|registerGlobalReceiver|playBidirectional|PacketDistributor\.sendToServer|ClientPlayNetworking\.send|messageBuilder)\b/],
-  ["interaction-handlers", "Interaction handlers that fire on both sides — check isClientSide.",
+  ["interaction-handlers", "Interaction handlers that fire on both sides: check isClientSide.",
     /\b(PlayerInteractEvent|EntityInteract|UseEntityCallback|UseBlockCallback|mobInteract|interactAt|InteractionResult\s+use\w*)\b/],
-  ["persistence", "Save/load code — check stable keys and tolerant loading.",
+  ["persistence", "Save/load code: check stable keys and tolerant loading.",
     /\b(saveAdditional|loadAdditional|addAdditionalSaveData|readAdditionalSaveData|SavedData|AttachmentType|DataComponentType)\b/],
-  ["client-imports-guarded", "Client imports used only inside client-only classes/methods (Dist.CLIENT, initializeClient) — fine, listed for completeness.", null],
+  ["client-imports-guarded", "Client imports used only inside client-only classes/methods (Dist.CLIENT, initializeClient): fine, listed for completeness.", null],
 ];
 
 const LEGACY_DATA_DIRS_121 = {
@@ -357,7 +357,7 @@ function checkDataKeys(root, rels, modId, codecFields, add) {
     if (!data || typeof data !== "object" || Array.isArray(data)) continue;
     for (const key of Object.keys(data)) {
       if (IGNORED_DATA_KEYS.has(key) || codecFields.has(key)) continue;
-      const hint = codecFields.has(toSnake(key)) ? ` — did you mean '${toSnake(key)}'?` : "";
+      const hint = codecFields.has(toSnake(key)) ? `: did you mean '${toSnake(key)}'?` : "";
       add("data-key-mismatch", "HIGH?",
         "Key in a custom data file that no codec reads: Mojang codecs ignore unknown keys silently, so the value falls back to its default.",
         r, `"${key}"${hint}`);
@@ -618,14 +618,14 @@ function toMarkdown(result, inventoryOnly, all = false) {
   for (const [p, c] of Object.entries(inv.packages)) out.push(`  - \`${p}\` (${c})`);
   if (inventoryOnly) return out.join("\n");
 
-  out.push("", "## Leads (confirm each by reading the code — '?' means severity depends on context)", "");
+  out.push("", "## Leads (confirm each by reading the code: '?' means severity depends on context)", "");
   const items = Object.entries(result.findings).sort(
     (a, b) => (SEV_ORDER[a[1].severity_hint.replace("?", "")] ?? 9) - (SEV_ORDER[b[1].severity_hint.replace("?", "")] ?? 9),
   );
   if (!items.length) out.push("_No heuristic hits._");
   for (const [cid, f] of items) {
-    out.push(`### ${cid} — ${f.severity_hint} (${f.hits.length})`, f.description);
-    for (const h of f.hits.slice(0, LIMIT)) out.push(`- ${h.location}${h.code ? ` — \`${h.code}\`` : ""}`);
+    out.push(`### ${cid}: ${f.severity_hint} (${f.hits.length})`, f.description);
+    for (const h of f.hits.slice(0, LIMIT)) out.push(`- ${h.location}${h.code ? `: \`${h.code}\`` : ""}`);
     if (f.hits.length > LIMIT) out.push(`- … ${f.hits.length - LIMIT} more (use --all)`);
     out.push("");
   }

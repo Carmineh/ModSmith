@@ -1,4 +1,4 @@
-# fix — root-cause fixes
+# fix: root-cause fixes
 
 Input can be:
 - an audit ID (`fix CRIT-01`, `fix CRIT-01 HIGH-02`, `fix all-critical`),
@@ -19,7 +19,7 @@ Input can be:
    - Bug description → find the code path, form a hypothesis, and explain how to reproduce it.
 3. **Plan the minimal change** and state it in one or two sentences before editing. If the right fix is large (redesign), say so and propose a staged plan instead of a giant edit.
 4. **Check save compatibility** (renamed keys/ids → migration). See `references/practices/persistence.md`.
-5. **Edit** following the loader/version idiom (consult the loader reference — don't guess API names).
+5. **Edit** following the loader/version idiom (consult the loader reference: don't guess API names).
 6. **Verify** with the `verify` procedure, at minimum a build; `runServer` if sides/registration/networking are involved. If the bug needs in-game testing, give the user precise steps to reproduce and confirm.
 7. **Record.** If the fix closes an audit finding, update its status in `AUDIT.md` (`fixed` + short note + commit/branch if committed). Then follow the profile's commit policy: `auto` → commit with a message like `fix(<area>): <what> (CRIT-01)` once the build passes; `propose` → say the changes are uncommitted and give that message; `ask` → ask. Never commit without a policy or the user's OK.
 

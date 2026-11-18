@@ -2,11 +2,11 @@
 
 ## The mental model
 There are two different "sides":
-- **Physical side** — which program is running: the game client (`Dist.CLIENT`) or a dedicated server (`Dist.DEDICATED_SERVER`). Client-only classes (`net.minecraft.client.*`: `Minecraft`, renderers, screens, models, `KeyMapping`) **do not exist** on a dedicated server.
-- **Logical side** — which half of the game a piece of code runs in. In singleplayer the client program runs *both* a logical client and an integrated logical server, on different threads. `level.isClientSide()` tells you the logical side.
+- **Physical side**: which program is running: the game client (`Dist.CLIENT`) or a dedicated server (`Dist.DEDICATED_SERVER`). Client-only classes (`net.minecraft.client.*`: `Minecraft`, renderers, screens, models, `KeyMapping`) **do not exist** on a dedicated server.
+- **Logical side**: which half of the game a piece of code runs in. In singleplayer the client program runs *both* a logical client and an integrated logical server, on different threads. `level.isClientSide()` tells you the logical side.
 
 Bugs come from mixing them up:
-1. **Class loading leak (CRITICAL):** common code references a client class → `NoClassDefFoundError`/`ClassNotFoundException` when that code runs on a dedicated server. Java loads classes lazily, so a reference inside a method body only explodes when that method runs (or when the verifier needs it, e.g. for types in signatures, fields, lambdas, `instanceof`/casts). Don't rely on "it's never called" — isolate.
+1. **Class loading leak (CRITICAL):** common code references a client class → `NoClassDefFoundError`/`ClassNotFoundException` when that code runs on a dedicated server. Java loads classes lazily, so a reference inside a method body only explodes when that method runs (or when the verifier needs it, e.g. for types in signatures, fields, lambdas, `instanceof`/casts). Don't rely on "it's never called": isolate.
 2. **Wrong logical side (HIGH):** game logic running on the logical client (changes not saved, other players don't see them, desync) or running on both sides (double effects, e.g. two items dropped, one a ghost).
 3. **Static shared state (HIGH):** a `static` map written by the server and read by the client "works" in singleplayer because both are in one JVM, and breaks on a dedicated server.
 
@@ -18,4 +18,4 @@ Bugs come from mixing them up:
 
 ## How to detect
 - Grep for `net.minecraft.client` imports outside client packages/source sets (`scripts/scan.mjs` does this), then check whether that class is reachable from common entry points.
-- Run `runServer` — the definitive test.
+- Run `runServer`: the definitive test.
