@@ -4,6 +4,12 @@
 # Default: --claude. Updating later is just `git pull` in this clone.
 set -eu
 
+case "$(uname -s)" in
+  MINGW*|MSYS*|CYGWIN*)
+    echo "On Windows use install.ps1 instead (Git Bash 'ln -s' copies the folder instead of linking it)." >&2
+    exit 1 ;;
+esac
+
 REPO_DIR=$(cd "$(dirname "$0")" && pwd)
 SKILL_DIR="$REPO_DIR/skills/modsmith"
 NAME=modsmith
