@@ -82,7 +82,8 @@ Then run `./gradlew build` (Windows: `gradlew.bat build`) once to confirm the te
   - `propose` (default for intermediate/expert): modsmith never commits; at the end of each step it says the changes are uncommitted and proposes the commit message. The user commits when and how they want.
   - `ask`: modsmith asks at the end of each step whether to commit now.
   Whatever the policy: never push, never commit unrelated changes the user made outside modsmith, and follow the project's existing commit style if it has one.
-- Never create a remote repository or push. You may mention that publishing on GitHub is an option.
+- **GitHub (optional)**: ask whether the mod will live on GitHub. If yes, offer the automatic **build** workflow (every push and pull request) and, for mods meant to be released, the **publish** workflow to Modrinth/CurseForge, following `references/github-ci.md`. Explain in plain words what the user must do themselves (project pages, tokens, repository secrets). Existing mods without CI get the same offer as a suggestion.
+- Never create a remote repository or push.
 
 ## 5. Write the profile
 

@@ -35,6 +35,7 @@ You can also just talk normally ("my mod crashes on the server, here's the log")
 - **Verify before writing code.** APIs change a lot between Minecraft versions and loaders, so Modsmith checks the real classes in your Gradle cache and the official docs instead of trusting memory, and says when something couldn't be verified.
 - **Safety rules.** Git or backups before every change, smallest possible change, save compatibility, never a global setting changed, never a push. Commits follow the policy you choose in `init`: Modsmith commits each step, only proposes commit messages, or asks every time.
 - **Standard expectations.** Every mod with blocks or items gets its own creative tab plus the right vanilla tabs; recipe-viewer (JEI, REI, EMI) and Jade support are offered as optional integrations, added only where the content needs them.
+- **GitHub (optional).** `init` can add an automatic build workflow and a Modrinth/CurseForge publish workflow; you only add the tokens as repository secrets. Also available later as `/modsmith new ci`.
 - **Heuristic scanner.** `scripts/scan.mjs` gives the audit quick leads (side leaks, data keys that no codec reads, 1.21 folder names, unknown ids in loot tables, per-tick sync, config registered twice, risky mixins…). Leads, not verdicts: every one is confirmed by reading the code.
 
 ## Installation
@@ -49,6 +50,15 @@ Inside Claude Code:
 ```
 
 Update later with `/plugin update`. As a plugin the command is namespaced (`/modsmith:modsmith audit`), or just ask in plain words ("audit my mod").
+
+### As a Codex plugin
+
+```bash
+codex plugin marketplace add Carmineh/ModSmith
+codex plugin add modsmith@modsmith
+```
+
+Start a new Codex session afterwards and ask for the skill by name ("$modsmith audit") or in plain words.
 
 ### With the generic skills CLI
 
@@ -65,16 +75,20 @@ git clone https://github.com/Carmineh/ModSmith.git
 macOS / Linux:
 
 ```bash
-ln -s "$(pwd)/ModSmith/skills/modsmith" ~/.claude/skills/modsmith
+./ModSmith/install.sh               # Claude Code (default)
+./ModSmith/install.sh --codex       # Codex
+./ModSmith/install.sh --all-agents  # both
 ```
 
 Windows (PowerShell, no admin needed):
 
 ```powershell
-New-Item -ItemType Junction -Path "$env:USERPROFILE\.claude\skills\modsmith" -Target "$PWD\ModSmith\skills\modsmith"
+.\ModSmith\install.ps1              # Claude Code (default)
+.\ModSmith\install.ps1 -Codex       # Codex
+.\ModSmith\install.ps1 -AllAgents   # both
 ```
 
-Restart Claude Code, then run `/modsmith` inside your mod's folder.
+The scripts link the skill folder (`~/.claude/skills/modsmith`, `~/.codex/skills/modsmith`) and accept `--uninstall` / `-Uninstall`. Restart your agent, then run `/modsmith` inside your mod's folder.
 
 **Requirements:** Node 18+ for the scanner (already there if you use Claude Code) and the JDK your Minecraft version needs for builds.
 
@@ -90,7 +104,10 @@ Modsmith was developed against real projects before release:
 ## Repository layout
 
 ```
-.claude-plugin/              plugin.json + marketplace.json (Claude Code plugin packaging)
+.claude-plugin/              Claude Code plugin and marketplace
+.codex-plugin/               Codex plugin manifest
+.agents/plugins/             Codex marketplace
+.github/workflows/           CI (tests on Linux/Windows/macOS, skill lint) and release on tags
 skills/modsmith/
 ├── SKILL.md                 entry point: commands, profile, guided path, safety rules, severity
 ├── references/
@@ -107,15 +124,18 @@ skills/modsmith/
     ├── lib/                 files, inventory, Java structure reader, scan pipeline, report
     └── checks/              one file per area: code, config, data, assets, mixins
 tests/                       scanner tests (node:test, tiny fake mods)
+tools/                       skill lint and release notes (used by CI)
+install.sh, install.ps1      linked installs for Claude Code and Codex
 ```
 
 ## Development
 
 ```bash
-npm test
+npm test                      # scanner tests (Node's built-in runner, nothing to install)
+node tools/lint-skill.mjs     # frontmatter, referenced files, manifests, no em dashes
 ```
 
-Runs the scanner tests with Node's built-in test runner; there are no dependencies to install. Each test builds a tiny fake mod with one pattern (and a safe variant that must stay silent).
+Each test builds a tiny fake mod with one pattern (and a safe variant that must stay silent). CI runs both on every push. To release, bump the version in both `plugin.json` files, add the section to `CHANGELOG.md`, and push a `vX.Y.Z` tag: the release workflow checks everything and publishes the GitHub release.
 
 ## Status
 

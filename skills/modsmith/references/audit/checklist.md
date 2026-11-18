@@ -98,4 +98,4 @@ See `practices/compatibility.md`.
 ## 12. Tests & tooling
 - [ ] Builds cleanly from a fresh clone.
 - [ ] Gametests for core mechanics (nice to have; LOW if missing, unless the mod is complex).
-- [ ] CI builds the mod (if the repo has `.github/workflows`, check it targets the right Java version).
+- [ ] CI builds the mod (if the repo has `.github/workflows`, check it targets the right Java version and validates the Gradle wrapper); publish workflows read tokens only from secrets.

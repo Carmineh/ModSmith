@@ -1,6 +1,6 @@
 # new: add a feature the idiomatic way
 
-Syntax: `new <kind> <name> [details]`. Kinds: `block`, `item`, `blockentity`, `entity`, `menu`/`screen`, `packet`, `command`, `config`, `mixin`, `recipe`, `datagen`, `attachment`/`component`, `event`. Free-form requests ("add a cow that drops gold") map to one or more kinds.
+Syntax: `new <kind> <name> [details]`. Kinds: `ci` (GitHub build/publish workflows, see `references/github-ci.md`), `block`, `item`, `blockentity`, `entity`, `menu`/`screen`, `packet`, `command`, `config`, `mixin`, `recipe`, `datagen`, `attachment`/`component`, `event`. Free-form requests ("add a cow that drops gold") map to one or more kinds.
 
 ## Procedure
 

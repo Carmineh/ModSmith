@@ -15,6 +15,7 @@ import { fileURLToPath } from "node:url";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const skillDir = path.join(repo, "skills", "modsmith");
+const EM_DASH = String.fromCharCode(0x2014);
 const errors = [];
 const err = (msg) => errors.push(msg);
 const read = (p) => fs.readFileSync(p, "utf8");
@@ -64,7 +65,7 @@ for (const rel of tracked) {
   if (!/\.(md|mjs|js|json|sh|ps1|yml|yaml|txt)$/.test(rel)) continue;
   const lines = read(path.join(repo, rel)).split("\n");
   lines.forEach((line, i) => {
-    if (line.includes("—")) err(`${rel}:${i + 1}: em dash`);
+    if (line.includes(EM_DASH)) err(`${rel}:${i + 1}: em dash`);
   });
 }
 

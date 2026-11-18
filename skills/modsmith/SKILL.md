@@ -115,6 +115,7 @@ Load only what the current task needs.
 - `references/loaders/`: `neoforge.md`, `fabric.md`, `forge.md` (idioms for each loader, focused on 1.20.x–1.21.x), `porting-map.md` (equivalents across loaders).
 - `references/versions/breaking-changes.md`: what changed between Minecraft versions that matters for porting and auditing.
 - `references/practices/`: `sides.md`, `networking.md`, `persistence.md`, `mixins.md`, `performance.md`, `compatibility.md`. Read the relevant one when writing or reviewing code in that area.
+- `references/github-ci.md`: GitHub Actions build and Modrinth/CurseForge publish workflows (`init`'s GitHub phase, `new ci`).
 - `references/api-lookup.md`: how to verify an API against the real Minecraft/loader classes in the project's Gradle cache.
 - `references/glossary.md`: plain-language definitions for beginners.
 - `assets/profile-template.md`: template for `.modsmith/PROFILE.md`.
