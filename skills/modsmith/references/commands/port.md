@@ -44,7 +44,7 @@ Order steps so the project compiles as early as possible: build setup → metada
 
 - Work on branch `port/<target>` (ask first). Without git: work on a copy of the folder.
 - Build files: take them from the official template for the target (see init.md §3), then re-apply the mod's customizations. Don't hand-edit version numbers from memory.
-- One step at a time; after each, build. Update the Status column. Commit per step only if the user wants commits.
+- One step at a time; after each, build. Update the Status column. Commit per step according to the profile's commit policy (`auto` / `propose` / `ask`).
 - When an API has no equivalent, stop and explain the options instead of inventing one.
 - Final verification: `build`, `runData` (if datagen), `runServer` headless, gametests; then give the user an in-game test checklist (each feature in STUDY.md).
 

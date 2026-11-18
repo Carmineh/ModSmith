@@ -21,7 +21,7 @@ Input can be:
 4. **Check save compatibility** (renamed keys/ids → migration). See `references/practices/persistence.md`.
 5. **Edit** following the loader/version idiom (consult the loader reference — don't guess API names).
 6. **Verify** with the `verify` procedure, at minimum a build; `runServer` if sides/registration/networking are involved. If the bug needs in-game testing, give the user precise steps to reproduce and confirm.
-7. **Record.** If the fix closes an audit finding, update its status in `AUDIT.md` (`fixed` + short note + commit/branch if committed). Offer to commit with a message like `fix(<area>): <what> (CRIT-01)`; don't commit unless the user agrees.
+7. **Record.** If the fix closes an audit finding, update its status in `AUDIT.md` (`fixed` + short note + commit/branch if committed). Then follow the profile's commit policy: `auto` → commit with a message like `fix(<area>): <what> (CRIT-01)` once the build passes; `propose` → say the changes are uncommitted and give that message; `ask` → ask. Never commit without a policy or the user's OK.
 
 ## Report
 

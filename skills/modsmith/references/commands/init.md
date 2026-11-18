@@ -30,6 +30,7 @@ Then ask the user (one compact message, with your detected values as defaults so
 - **Experience level** (beginner / intermediate / expert) — always ask; it can't be detected.
 - **Docs language** — English by default (shareable); offer the user's language as the alternative.
 - **modsmith directory** — `.modsmith/` committed (recommended for own mods), `.modsmith/` gitignored, or an external folder (read-only use).
+- **Commit policy** (only if the project uses git) — `auto`, `propose` or `ask`, see section 4.
 - Anything you couldn't detect or that looks inconsistent.
 - **Parchment** (only for Minecraft up to 1.21.x with Mojang mappings and no Parchment; from 26.1 the game ships unobfuscated with parameter names, so Parchment isn't needed): offer to add it. One or two sentences on why: Mojang's names have no parameter names or javadoc, so Minecraft code shows `p_41421_`; Parchment adds readable names and docs in the IDE, in generated overrides and in the sources modsmith reads to verify APIs. It changes nothing in the built mod. If yes, add it the way the loader reference says (`neoforge.md` / `fabric.md`) with the version from parchmentmc.org, then build once.
 - Optional: goals for the mod (to orient future audits), target environments (client-only? server-required? both). Mention that `/modsmith plan` can turn their next ideas into a guided roadmap. If the mod has machines or custom recipes but no recipe-viewer/Jade integration, note it in the profile as a suggestion (don't add it during init).
@@ -76,6 +77,11 @@ Then run `./gradlew build` (Windows: `gradlew.bat build`) once to confirm the te
 ## 4. Git
 
 - No repository → propose `git init`, a `.gitignore` for Gradle/IDE (`build/`, `.gradle/`, `run/`, `out/`, `.idea/`, `*.iml`, `.vscode/`, `bin/`), and an initial commit of the current state. To beginners, explain in one sentence why: fixes and ports need a safe way back. If they decline, continue, and remember that `port` will work on a folder copy instead of a branch.
+- **Commit policy** (ask once when the project uses git, existing or new; store it in the profile):
+  - `auto`: modsmith commits by itself after each completed step (a milestone from `new`, a fix batch, a port step), with a Conventional Commits message, only after the build passes. Recommended for beginners: every step becomes a safe point to go back to.
+  - `propose` (default for intermediate/expert): modsmith never commits; at the end of each step it says the changes are uncommitted and proposes the commit message. The user commits when and how they want.
+  - `ask`: modsmith asks at the end of each step whether to commit now.
+  Whatever the policy: never push, never commit unrelated changes the user made outside modsmith, and follow the project's existing commit style if it has one.
 - Never create a remote repository or push. You may mention that publishing on GitHub is an option.
 
 ## 5. Write the profile

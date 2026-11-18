@@ -48,5 +48,6 @@ _Created by `/modsmith init` on <date>. Edit freely; modsmith re-checks it again
 
 ## Git
 - **Repository:** <yes | no>
+- **Commit policy:** <auto | propose | ask> — auto: modsmith commits each completed step; propose: modsmith suggests messages, the user commits; ask: modsmith asks each time
 - **Default branch:** <e.g. main, mc1.21.1/dev>
 - **Current branch at last run:** <branch> @ <short sha>
