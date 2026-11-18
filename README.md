@@ -1,29 +1,41 @@
 # Modsmith: a Claude skill for Minecraft mod development
 
-`modsmith` is a [Claude Code](https://claude.com/claude-code) skill that helps you **create, understand, fix, audit and port Minecraft Java mods** (NeoForge, Fabric, Forge) following good engineering practices. It works for first-time modders (it explains concepts and picks safe defaults) and for experienced developers (terse, technical).
+`modsmith` is a [Claude Code](https://claude.com/claude-code) skill that helps you **create, understand, fix, audit and port Minecraft Java mods** (NeoForge, Fabric, Forge, multiloader) with good engineering practices.
+
+It works for first-time modders (it explains every concept, picks safe defaults and always tells you the next step) and for experienced developers (short, technical answers, you stay in control of commits).
+
+## What it does
+
+**New mod, from an idea to a playable mod.** Describe the mod in a few sentences. Modsmith picks loader and Minecraft version from what the idea needs (and checks that the mods it depends on exist there), creates the project from the official template, and writes a plan with small milestones. Each milestone is one command and ends with something you can try in game.
+
+**Existing mod, from "what does this do?" to a clean codebase.** Modsmith maps the mod, audits it with prioritized findings, fixes them in batches with backups and verification, and reviews your changes before you commit.
+
+**Port.** Plan and carry out a move to another Minecraft version or loader, one axis at a time, with dependency checks and save-compatibility notes.
 
 ## Commands
 
 | Command | What it does |
 |---|---|
-| `/modsmith init` | Detects the project (or scaffolds a new one from the official template), sets up git, and writes `.modsmith/PROFILE.md` (loader, version, language, experience level…) so you're never asked twice |
-| `/modsmith plan [idea]` | Turns an idea ("tiered furnaces", "a Create addon driven by RPM") into `.modsmith/DESIGN.md`: mechanics, content, dependency availability check, open design questions and a roadmap of small playable milestones, each mapped to the command that builds it. Run by `init` on new mods |
-| `/modsmith study [area]` | Maps the mod's architecture into `.modsmith/STUDY.md`: entry points, registries, events, networking, persistence, mixins, key gameplay flows |
-| `/modsmith audit [--scope=path] [--min=LEVEL]` | Prioritized report in `.modsmith/AUDIT.md` with **CRITICAL / HIGH / MEDIUM / LOW** findings, each with evidence, impact, fix and effort |
-| `/modsmith fix <ID \| description \| crash log>` | Root-cause fix with minimal changes, save-compatibility checks and verification; updates the audit |
-| `/modsmith new <kind> <name>` | Adds a complete feature (block, item, entity, block entity, menu, packet, command, config, mixin…) the idiomatic way, including models, loot, lang, tags, datagen |
-| `/modsmith port <target>` | Migrates to another Minecraft version (`port 1.21.1`), another loader (`port neoforge`), both (`port neoforge@1.21.1`, done in two stages), or adds a loader (`port +fabric`, multiloader) |
-| `/modsmith verify` | Build, datagen, headless dedicated-server smoke test, gametests, with an honest report |
-| `/modsmith review` | Audits only your uncommitted changes before you commit |
+| `/modsmith init` | Detects the project (or creates a new one from the official template, starting from your idea), sets up git and writes `.modsmith/PROFILE.md` so you're never asked the same questions twice |
+| `/modsmith plan [idea]` | Turns an idea ("tiered furnaces", "a Create addon driven by RPM") into `.modsmith/DESIGN.md`: mechanics, content, dependency check, open design questions and a roadmap of playable milestones, each mapped to the command that builds it |
+| `/modsmith study [area]` | Maps the mod into `.modsmith/STUDY.md`: entry points, registries, events, networking, saved data, mixins, key gameplay flows |
+| `/modsmith audit` | Prioritized report in `.modsmith/AUDIT.md` (**CRITICAL / HIGH / MEDIUM / LOW**), each finding with evidence, impact, fix and effort, plus a fix plan and questions for the author when something may be intentional |
+| `/modsmith fix [ID \| description \| crash log]` | Root-cause fix with the smallest change, save-compatibility checks and a build; with no argument it proposes the next batch from the audit |
+| `/modsmith new <kind> <name>` | Adds a complete feature (block, item, block entity, menu, packet, config, mixin…): registration, models, loot table, translations, tags, creative tabs and integrations, following the plan |
+| `/modsmith port <target>` | Version port (`port 1.21.4`), loader port (`port neoforge`), both in two stages, or a second loader (`port +fabric`) |
+| `/modsmith verify` | Build, datagen, gametests and a dedicated-server start, with an honest pass/fail table |
+| `/modsmith review` | Checks your uncommitted changes (or the last fixes, without git) before you commit |
 
-You can also just talk normally ("my mod crashes on the server, here's the log"): the skill maps the request to the right command.
+You can also just talk normally ("my mod crashes on the server, here's the log"): Modsmith picks the right command.
 
-## Severity scale
+## How it works
 
-- **CRITICAL**: crashes, save corruption, dedicated-server crashes, exploitable client→server trust.
-- **HIGH**: desync, memory leaks, heavy per-tick work, threading bugs, incompatible mixins.
-- **MEDIUM**: deprecated APIs, hardcoded values, missing datagen/translations, maintainability debt.
-- **LOW**: naming, structure, docs, warnings.
+- **Profile.** `init` records loader, versions, mappings, dependencies, your experience level (beginner, intermediate, expert), reply and document languages, and how commits are handled. Every other command reads it.
+- **Documents in `.modsmith/`.** `PROFILE.md`, `DESIGN.md`, `STUDY.md`, `AUDIT.md`, `PORT-<target>.md`. Commit them as project documentation, or keep them out of git. Use `--out=<folder>` to work read-only (for example on someone else's mod).
+- **Verify before writing code.** APIs change a lot between Minecraft versions and loaders, so Modsmith checks the real classes in your Gradle cache and the official docs instead of trusting memory, and says when something couldn't be verified.
+- **Safety rules.** Git or backups before every change, smallest possible change, save compatibility, never a global setting changed, never a push. Commits follow the policy you choose in `init`: Modsmith commits each step, only proposes commit messages, or asks every time.
+- **Standard expectations.** Every mod with blocks or items gets its own creative tab plus the right vanilla tabs; recipe-viewer (JEI, REI, EMI) and Jade support are offered as optional integrations, added only where the content needs them.
+- **Heuristic scanner.** `scripts/scan.mjs` gives the audit quick leads (side leaks, data keys that no codec reads, 1.21 folder names, unknown ids in loot tables, per-tick sync, config registered twice, risky mixins…). Leads, not verdicts: every one is confirmed by reading the code.
 
 ## Installation
 
@@ -36,7 +48,7 @@ Inside Claude Code:
 /plugin install modsmith@modsmith
 ```
 
-Update later with `/plugin update`. Installed as a plugin, the skill's commands are namespaced: `/modsmith:modsmith audit` (or just ask in plain words, "audit my mod": and Claude picks the skill).
+Update later with `/plugin update`. As a plugin the command is namespaced (`/modsmith:modsmith audit`), or just ask in plain words ("audit my mod").
 
 ### With the generic skills CLI
 
@@ -59,33 +71,55 @@ ln -s "$(pwd)/ModSmith/skills/modsmith" ~/.claude/skills/modsmith
 Windows (PowerShell, no admin needed):
 
 ```powershell
-New-Item -ItemType Junction -Path "$env:USERPROFILE\.claude\skills\modsmith" -Target "$PWD\ClaudeMCSkill\skills\modsmith"
+New-Item -ItemType Junction -Path "$env:USERPROFILE\.claude\skills\modsmith" -Target "$PWD\ModSmith\skills\modsmith"
 ```
 
-Or copy the folder into a project's `.claude/skills/` to use it only there. Restart Claude Code, then run `/modsmith` inside your mod's folder.
+Restart Claude Code, then run `/modsmith` inside your mod's folder.
 
-Requirements: Node 18+ for the heuristic scanner (`scripts/scan.mjs`; already present if you use Claude Code), a JDK matching your Minecraft version for builds.
+**Requirements:** Node 18+ for the scanner (already there if you use Claude Code) and the JDK your Minecraft version needs for builds.
+
+## Tested on
+
+Modsmith was developed against real projects before release:
+
+- an existing NeoForge 1.21.1 content mod with known problems (study, audit, fixes, a port plan to 26.1.2);
+- a large open-source multiloader mod (NeoForge + Fabric), read-only: the audit found a real item-duplication bug;
+- two new mods built from scratch with the guided path (Fabric and NeoForge), including gametests that were proven to fail on a deliberate bug;
+- a copy of a clean mod with 8 bugs planted on purpose: an independent audit found **8 of 8**, and the clean original produced **no false CRITICAL or HIGH**.
 
 ## Repository layout
 
 ```
-.claude-plugin/                 # plugin.json + marketplace.json (Claude Code plugin packaging)
+.claude-plugin/              plugin.json + marketplace.json (Claude Code plugin packaging)
 skills/modsmith/
-├── SKILL.md                    # entry point: commands, profile, safety rules, severity
+├── SKILL.md                 entry point: commands, profile, guided path, safety rules, severity
 ├── references/
-│   ├── commands/               # full procedure for each command
-│   ├── audit/                  # severity criteria, checklist, report template
-│   ├── loaders/                # NeoForge, Fabric, Forge idioms + cross-loader map
-│   ├── versions/               # breaking changes between Minecraft versions
-│   ├── practices/              # sides, networking, persistence, mixins, performance, compatibility
-│   └── glossary.md             # plain-language definitions for beginners
-├── assets/profile-template.md
-└── scripts/scan.mjs            # dependency-free heuristic scanner (leads for audits)
+│   ├── commands/            full procedure for each command
+│   ├── audit/               severity criteria, checklist, report template
+│   ├── loaders/             NeoForge, Fabric, Forge idioms and a cross-loader map
+│   ├── versions/            breaking changes between Minecraft versions, up to 26.1
+│   ├── practices/           sides, networking, persistence, mixins, performance, compatibility
+│   ├── api-lookup.md        how to verify an API against the real classes
+│   └── glossary.md          plain-language definitions for beginners
+├── assets/                  templates for PROFILE.md and DESIGN.md
+└── scripts/
+    ├── scan.mjs             scanner entry point
+    ├── lib/                 files, inventory, Java structure reader, scan pipeline, report
+    └── checks/              one file per area: code, config, data, assets, mixins
+tests/                       scanner tests (node:test, tiny fake mods)
 ```
+
+## Development
+
+```bash
+npm test
+```
+
+Runs the scanner tests with Node's built-in test runner; there are no dependencies to install. Each test builds a tiny fake mod with one pattern (and a safe variant that must stay silent).
 
 ## Status
 
-Early version, focused on NeoForge/Fabric 1.20.5 to 1.21.1. Loader and version references are orientation material: the skill is instructed to verify APIs against the actual project before writing code. Contributions and corrections welcome.
+Focused on NeoForge and Fabric from 1.20.5 to 1.21.x, with orientation notes up to 26.1. Loader and version references point the skill to the right places; it is instructed to confirm APIs in the actual project. Corrections and contributions are welcome.
 
 ## License
 
