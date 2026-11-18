@@ -42,14 +42,16 @@ You can also just talk normally ("my mod crashes on the server, here's the log")
 
 ### As a Claude Code plugin (recommended)
 
-Inside Claude Code:
+**Claude desktop app:** open the plugin **Marketplace**, choose to add a marketplace from a repository, enter `Carmineh/ModSmith` (or `https://github.com/Carmineh/ModSmith`), then install **modsmith** from it. Typing the `/plugin` commands in the app's message box is not enough.
+
+**Claude Code in a terminal:**
 
 ```
 /plugin marketplace add Carmineh/ModSmith
 /plugin install modsmith@modsmith
 ```
 
-Update later with `/plugin update`. As a plugin the command is namespaced (`/modsmith:modsmith audit`), or just ask in plain words ("audit my mod").
+Update later with `/plugin update` (or from the Marketplace in the app). If you previously linked the skill with `install.ps1` / `install.sh`, remove that link first (`-Uninstall` / `--uninstall`) so the skill is not loaded twice. As a plugin the command is namespaced (`/modsmith:modsmith audit`), or just ask in plain words ("audit my mod").
 
 ### As a Codex plugin
 

@@ -7,7 +7,7 @@
     {
       "name": "modsmith",
       "source": "./",
-      "description": "Minecraft mod development & maintenance: init, study, audit, fix, new, port, verify, review."
+      "description": "Minecraft mod development & maintenance: init, plan, study, audit, fix, new, port, verify, review."
     }
   ]
 }
