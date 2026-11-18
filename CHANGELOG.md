@@ -16,4 +16,4 @@ First public version.
 - 19 automatic tests (`npm test`).
 
 ### Packaging
-- Claude Code plugin and marketplace, Codex plugin and marketplace, `install.sh` / `install.ps1` for linked installs, CI (tests on Linux, Windows, macOS; skill lint) and release workflow.
+- Claude Code plugin and marketplace, Codex plugin and marketplace, `install.sh` / `install.ps1` for linked installs, CI (tests on Linux and Windows; skill lint with YAML frontmatter, UTF-8 and script syntax checks) and release workflow.

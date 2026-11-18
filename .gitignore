@@ -10,3 +10,6 @@ __pycache__/
 Thumbs.db
 .idea/
 .vscode/
+
+# Node (CI installs yaml with --no-save)
+node_modules/

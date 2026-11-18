@@ -18,7 +18,9 @@ jobs:
       - name: Tests
         run: npm test
       - name: Lint and check the tag matches the plugin version
-        run: node tools/lint-skill.mjs --tag=${{ github.ref_name }}
+        run: |
+          npm install --no-save --no-package-lock yaml@2.6.1
+          node tools/lint-skill.mjs --tag=${{ github.ref_name }}
       - name: Release notes from CHANGELOG.md
         run: node tools/release-notes.mjs ${{ github.ref_name }} > notes.md
       - name: Create GitHub release

@@ -107,7 +107,7 @@ Modsmith was developed against real projects before release:
 .claude-plugin/              Claude Code plugin and marketplace
 .codex-plugin/               Codex plugin manifest
 .agents/plugins/             Codex marketplace
-.github/workflows/           CI (tests on Linux/Windows/macOS, skill lint) and release on tags
+.github/workflows/           CI (tests on Linux and Windows, skill lint) and release on tags
 skills/modsmith/
 ├── SKILL.md                 entry point: commands, profile, guided path, safety rules, severity
 ├── references/
@@ -132,7 +132,7 @@ install.sh, install.ps1      linked installs for Claude Code and Codex
 
 ```bash
 npm test                      # scanner tests (Node 22+, built-in runner, nothing to install)
-node tools/lint-skill.mjs     # frontmatter, referenced files, manifests
+node tools/lint-skill.mjs     # frontmatter (YAML), referenced files, manifests, UTF-8, scripts parse
 ```
 
 Each test builds a tiny fake mod with one pattern (and a safe variant that must stay silent). CI runs both on every push. To release, bump the version in both `plugin.json` files, add the section to `CHANGELOG.md`, and push a `vX.Y.Z` tag: the release workflow checks everything and publishes the GitHub release.
