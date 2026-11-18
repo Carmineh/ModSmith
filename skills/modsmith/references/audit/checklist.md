@@ -57,6 +57,8 @@ Technical checks miss most real bugs in content mods. For each core mechanic in 
 - [ ] **Validation of loaded data.** Invalid entries are rejected **with a log line naming the file and reason**; ranges are validated (`Codec.intRange`, `doubleRange`).
 - [ ] **Progression is reachable.** Follow the crafting/upgrade chain end to end: every step has a loadable recipe, every block drops itself (or its intended loot), recipe-unlock advancements trigger at a sensible moment. One broken link blocks everything after it.
 - [ ] **Material consistency** (usually a question for the author): tiers/materials behave like their vanilla counterparts where players expect it (hardness, tool level, fire resistance of netherite items, stack size).
+- [ ] **Copies of player-provided stacks** (filters, ghost slots, templates, "remember this item" features) keep only what's needed: a full copy duplicates container contents/books and can create oversized NBT (book-ban style kicks).
+- [ ] **Item collection** (vacuums, magnets) respects pickup delay and "don't move" markers from other mods.
 - [ ] **Balance-critical values** (yields, chances, costs) come from data/config, not magic numbers scattered in code.
 - [ ] **Player feedback** is translatable (`Component.translatable`), not hard-coded English.
 
