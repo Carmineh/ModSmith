@@ -17,7 +17,7 @@ The second habit, for audits: **most real bugs in content mods are logic and dat
 
 ## Commands
 
-The user invokes the skill as `/modsmith <command> [args]`. If they talk naturally instead ("can you check my mod for problems?"), map the request to the closest command and say which one you're running.
+The user invokes the skill as `/modsmith <command> [args]` (Claude Code), or by naming the skill and the command in their message in other agents (e.g. Codex: "$modsmith audit"). If they talk naturally instead ("can you check my mod for problems?"), map the request to the closest command and say which one you're running.
 
 | Command | Purpose | Details |
 |---|---|---|
@@ -74,7 +74,7 @@ When nobody can answer questions (CI, subagents, batch runs), don't block: use d
 
 ### Code references
 
-Cite code with the **path relative to the mod's root**, always in the same form: `src/main/java/com/example/block/FooBlock.java:42` (resources likewise: `src/main/resources/data/<ns>/...`). No shortened package-relative paths: a full path is unambiguous and clickable both in documents and in chat links (in chat, link it as `[FooBlock.java:42](src/main/java/.../FooBlock.java:42)`). Take line numbers from a per-file view (the Read tool, or `grep -n` on one file): concatenating several files with `cat -n` numbers them as one stream and gives wrong references.
+Cite code with the **path relative to the mod's root**, always in the same form: `src/main/java/com/example/block/FooBlock.java:42` (resources likewise: `src/main/resources/data/<ns>/...`). No shortened package-relative paths: a full path is unambiguous and clickable both in documents and in chat links (in chat, link it as `[FooBlock.java:42](src/main/java/.../FooBlock.java:42)`). Take line numbers from a per-file view (a file viewer that shows line numbers, or `grep -n` on one file): concatenating several files with `cat -n` numbers them as one stream and gives wrong references.
 
 ## Adapting to the user's experience level
 
@@ -119,4 +119,4 @@ Load only what the current task needs.
 - `references/glossary.md`: plain-language definitions for beginners.
 - `assets/profile-template.md`: template for `.modsmith/PROFILE.md`.
 - `assets/design-template.md`: template for `DESIGN.md` (idea, mechanics, content, dependencies, open questions, roadmap).
-- `scripts/scan.mjs`: fast heuristic scanner (`node scripts/scan.mjs <mod-root>`; Node 18+ ships with Claude Code, nothing to install). It produces leads, not verdicts: confirm every hit by reading the code before reporting it.
+- `scripts/scan.mjs`: fast heuristic scanner (`node scripts/scan.mjs <mod-root>`; Node 18+, normally already installed with the coding agent; nothing else to install). It produces leads, not verdicts: confirm every hit by reading the code before reporting it.

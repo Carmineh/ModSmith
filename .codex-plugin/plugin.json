@@ -1,0 +1,28 @@
+{
+  "name": "modsmith",
+  "version": "0.1.0",
+  "description": "Create, study, audit, fix and port Minecraft Java mods (NeoForge, Fabric, Forge) with good engineering practices and a guided path from idea to playable mod.",
+  "author": {
+    "name": "Carmineh",
+    "url": "https://github.com/Carmineh"
+  },
+  "homepage": "https://github.com/Carmineh/ModSmith",
+  "repository": "https://github.com/Carmineh/ModSmith",
+  "license": "MIT",
+  "keywords": ["skills", "minecraft", "modding", "neoforge", "fabric", "forge", "audit", "porting"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Modsmith",
+    "shortDescription": "Minecraft mod development and maintenance: plan, build, audit, fix and port.",
+    "longDescription": "Modsmith helps create, understand, fix, audit and port Minecraft Java mods (NeoForge, Fabric, Forge, multiloader). New mods follow a guided path from an idea to playable milestones; existing mods get a study, a prioritized CRITICAL/HIGH/MEDIUM/LOW audit and fixes in safe batches.",
+    "developerName": "Carmineh",
+    "category": "Coding",
+    "capabilities": [],
+    "websiteURL": "https://github.com/Carmineh/ModSmith",
+    "defaultPrompt": [
+      "Audit my Minecraft mod and tell me what to fix first.",
+      "Create a new NeoForge mod that adds tiered furnaces.",
+      "My mod crashes on the dedicated server, here is the log."
+    ]
+  }
+}
