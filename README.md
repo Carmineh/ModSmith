@@ -131,7 +131,7 @@ install.sh, install.ps1      linked installs for Claude Code and Codex
 ## Development
 
 ```bash
-npm test                      # scanner tests (Node's built-in runner, nothing to install)
+npm test                      # scanner tests (Node 22+, built-in runner, nothing to install)
 node tools/lint-skill.mjs     # frontmatter, referenced files, manifests
 ```
 
